@@ -1,13 +1,13 @@
 import {Button, Container, TextField, Typography} from '@mui/material';
 import {CSSProperties, useState} from "react";
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 export const HomePage=()=>{
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const handleLogin=()=>{
-        // navigate('/donations')   //TODO
+        navigate('/donations')
     }
     const handleEmail = (event: any) => {
         setEmail(event.target.value);
