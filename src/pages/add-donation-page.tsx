@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { TextField, Button, Box } from "@mui/material";
+import { TextField, Button, Box, Typography, Dialog, DialogContent } from "@mui/material";
 import { InsertPhoto } from '@mui/icons-material';
+import { Cause } from "../shared/Types";
+import { addCauseAPI } from "../api/CauseAPI";
+import { useNavigate } from "react-router-dom";
 import './AddPage.css';
 
 export const AddDonationPage = () => {
@@ -9,10 +12,33 @@ export const AddDonationPage = () => {
     const [location, setLocation] = useState('');
     const [minimumSum, setMinimumSum] = useState('');
     const [image, setImage] = useState<string | null>(null);
+    const [currency, setCurrency] = useState(''); 
+    const [errorMsg, setErrorMsg] = useState('');
+    const navigate = useNavigate();
 
-    const handleAddCause = () => {
+    const handleAddCause = async () => {
         // TO DO: Call to BE - parseFloat for mininum sum + handle error?
-        alert('Clicked!');
+        try{
+            const cause: Cause = {
+                descriere: description,
+                titlu: title,
+                locatie: location,
+                sumaMinima: parseInt(minimumSum),
+                sumaStransa: 0,
+                moneda: currency
+            }
+            console.log(cause);
+            await addCauseAPI(1, cause);
+            console.log('added item!!');
+            navigate('/donations');
+        } catch(error: any){
+            console.log('error: '+error);
+            setErrorMsg('Error at add!');
+        }
+    }
+
+    const handleClose = () => {
+        setErrorMsg('');
     }
 
     const onImageChange = (event: any) => {
@@ -53,6 +79,13 @@ export const AddDonationPage = () => {
                     required
                     value={minimumSum}
                 />
+                <label className="formLabel">Currency: </label>
+                <TextField 
+                    label="Currency"
+                    onChange={e => setCurrency(e.target.value)}
+                    required
+                    value={currency}
+                />
             </form>
             <Button variant="contained" component="label" sx={{marginBottom: "5vh"}}>
                 <InsertPhoto></InsertPhoto> Choose Picture
@@ -73,6 +106,15 @@ export const AddDonationPage = () => {
                 onClick={handleAddCause}>
                     Add Cause
             </Button>
+            <Dialog
+                open={!!errorMsg}
+                onClose={handleClose}>
+                <DialogContent>
+                    <Typography>
+                        Error: {errorMsg}
+                    </Typography>
+                </DialogContent>
+            </Dialog>
         </Box>
     );
 }
