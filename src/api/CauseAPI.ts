@@ -10,7 +10,7 @@ export const addCauseAPI = async (userID: number, cause: Cause) => {
 
 export const getAllCauseAPI = async (): Promise<Cause[]> => {
     try {
-        const response = await axios.get(`${API_PATH}/`, config);
+        const response = await axios.get(`${API_PATH}`, config);
         return response.data as Cause[]; // Cast to Cause[]
     } catch (error) {
         console.error("Error fetching all causes:", error);
@@ -18,11 +18,20 @@ export const getAllCauseAPI = async (): Promise<Cause[]> => {
     }
 };
 export const getUserCauseAPI = async (): Promise<Cause[]> => {
-// TODO cant find get causes for a user so this does not work
+// TODO cant find get causes for user so this does not work
     try {
-        const response = await axios.get(`${API_PATH}/`, config);
+        const response = await axios.get(`${API_PATH}`, config);
         return response.data as Cause[]; // Cast to Cause[]
     } catch (error) {
+        console.error("Error fetching all causes:", error);
+        throw error;
+    }
+}
+export const deleteCauseAPI = async (causeId: Number) => {
+    try {
+        await axios.delete(`${API_PATH}/${causeId}`, config);
+    }
+    catch (error) {
         console.error("Error fetching all causes:", error);
         throw error;
     }

@@ -30,40 +30,9 @@ export const DonationsPage = () => {
     const handleAddClick = () => {
         navigate('/add')
     };
-
-    // Function for the Account icon
     const handleAccountClick = () => {
         navigate('/mydonations')
     };
-    const causesHardcoded: Cause[] = [
-        {
-            id: 1,
-            descriere: "Strangere de fonduri pentru renovarea scolilor",
-            titlu: "Renovare Scoli",
-            locatie: "Orasul X",
-            sumaMinima: 10000,
-            sumaStransa: 5000,
-            moneda: "EUR"
-        },
-        {
-            id: 2,
-            descriere: "Ajutor pentru victimele inundatiilor",
-            titlu: "Inundatii Ajutor",
-            locatie: "Regiunea Y",
-            sumaMinima: 15000,
-            sumaStransa: 8000,
-            moneda: "EUR"
-        },
-        {
-            id: 3,
-            descriere: "Campanie de plantare arbori",
-            titlu: "Plantam Impreuna",
-            locatie: "Zona Verde",
-            sumaMinima: 5000,
-            sumaStransa: 2000,
-            moneda: "EUR"
-        }
-    ];
     return (
         <Box>
             <AppBar position="static">
@@ -82,7 +51,7 @@ export const DonationsPage = () => {
             </AppBar>
             <h1>Charity causes:</h1>
 
-            {causesHardcoded.map((cause) => (
+            {causes.map((cause) => (
                 <CauzaCard key={cause.id?.toString()} cauza={cause} />
             ))}
         </Box>
