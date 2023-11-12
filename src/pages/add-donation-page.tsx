@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { TextField, Button, Box, Typography, Dialog, DialogContent } from "@mui/material";
 import { InsertPhoto } from '@mui/icons-material';
 import { Cause } from "../shared/Types";
 import { addCauseAPI } from "../api/CauseAPI";
 import { useNavigate } from "react-router-dom";
 import './AddPage.css';
+import { CausesContext } from "../shared/CauseProvider";
 
 export const AddDonationPage = () => {
+    const { addCause, fetchingError } = useContext(CausesContext);
     const [description, setDescription] = useState('');
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
@@ -28,12 +30,12 @@ export const AddDonationPage = () => {
                 moneda: currency
             }
             console.log(cause);
-            await addCauseAPI(1, cause);
-            console.log('added item!!');
+            await addCause?.(1, cause);
+            console.log('added cause!!');
             navigate('/donations');
         } catch(error: any){
             console.log('error: '+error);
-            setErrorMsg('Error at add!');
+            setErrorMsg(fetchingError?.message || 'Error at add!');
         }
     }
 
