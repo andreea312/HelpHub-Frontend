@@ -89,7 +89,9 @@ export const AddDonationPage = () => {
                     value={currency}
                 />
             </form>
-            <Button variant="contained" component="label" sx={{marginBottom: "5vh"}}>
+            <Button variant="contained" component="label" sx={{marginBottom: "5vh", background: '#B23374','&:hover': {
+                    backgroundColor: '#7F113C',
+                }, color: 'black'}}>
                 <InsertPhoto></InsertPhoto> Choose Picture
                 <input
                     type="file"

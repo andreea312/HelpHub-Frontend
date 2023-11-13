@@ -33,7 +33,9 @@ export const HomePage=()=>{
                     onChange={handlePassword}
 
                 />
-                <Button onClick={handleLogin}>Log in</Button>
+                <Button sx={{ background: '#B23374','&:hover': {
+                        backgroundColor: '#7F113C',
+                    }, color: 'black'}} onClick={handleLogin}>Log in</Button>
             </Container>
         </>
     )

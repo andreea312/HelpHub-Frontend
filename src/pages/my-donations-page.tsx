@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
-import {Box, Typography} from "@mui/material";
+import {AppBar, Box, Typography} from "@mui/material";
 import {Cause} from "../shared/Types";
 import {getUserCauseAPI} from "../api/CauseAPI";
 import {EditCauzaCard} from "../components/edit-cauza-card";
 
-export const MyDonationsPage=()=>{
+export const MyDonationsPage = () => {
     const userId = 1; // TODO: Replace with actual user ID
     const [cauze, setCauze] = useState<Cause[]>([]);
     const fetchUserCauses = async () => {
@@ -29,12 +29,24 @@ export const MyDonationsPage=()=>{
     //         moneda: "EUR"
     //     }
     // ];
+    const handleCauseDelete = (deletedCauseId: Number) => {
+        setCauze(cauze.filter((cause) => cause.id !== deletedCauseId));
+    };
+    const commonAppBarStyles = {
+        background: '#B23374',
+        height: '9vh',
+    };
+
     return (
         <Box>
-            <Typography variant={'h3'} sx={{background:'#B23374'}}>My Charity Causes</Typography>
-            {cauze.map((cauza) => (
-                <EditCauzaCard key={cauza.id} cauza={cauza} />
-            ))}
+            <AppBar position="static" sx={commonAppBarStyles}> </AppBar>
+                <Typography variant={'h3'} sx={{color: 'black'}}>
+                    My Charity Causes
+                </Typography>
+                {cauze.map((cauza) => (
+                    <EditCauzaCard key={cauza.id} cauza={cauza} onDelete={handleCauseDelete}/>
+                ))}
+
         </Box>
-    )
+    );
 }

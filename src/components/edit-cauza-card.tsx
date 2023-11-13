@@ -2,15 +2,17 @@ import { Button, Card, CardContent, Typography } from "@mui/material";
 import { Cause } from "../shared/Types";
 import {deleteCauseAPI, getUserCauseAPI} from "../api/CauseAPI";
 
-export const EditCauzaCard = ({ cauza }: { cauza: Cause }) => {
-    const handleDelete=()=>{
+export const EditCauzaCard = ({ cauza, onDelete }: { cauza: Cause, onDelete: (causeId: number) => void }) => {
+    const handleDelete = async () => {
         try {
-            if(cauza.id)
-                deleteCauseAPI(cauza.id).then(r => console.log(r));
+            if (cauza.id) {
+                await deleteCauseAPI(cauza.id);
+                onDelete(cauza.id);
+            }
         } catch (error) {
-            console.log("Error fetching user causes");
+            console.log("Error deleting cause");
         }
-    }
+    };
 
     return (
         <Card sx={{display: 'flex'}}>

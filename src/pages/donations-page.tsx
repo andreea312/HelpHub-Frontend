@@ -2,7 +2,7 @@ import {
     AppBar,
     Box,
     IconButton,
-    Toolbar, Tooltip, CircularProgress
+    Toolbar, Tooltip, CircularProgress, Typography
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
@@ -47,10 +47,15 @@ export const DonationsPage = () => {
         )
     }
 
+    const commonAppBarStyles = {
+        background: '#B23374',
+        height: '3%',
+    };
+
     return (
         <Box>
-            <AppBar position="static">
-                <Toolbar sx={{ justifyContent: 'flex-end' , background:'#B23374'}}>
+            <AppBar position="static" sx={commonAppBarStyles}>
+                <Toolbar sx={{ justifyContent: 'flex-end', background: '#B23374' }}>
                     <Tooltip title="Add charity cause">
                         <IconButton color="inherit" onClick={handleAddClick}>
                             <AddIcon />
@@ -63,10 +68,12 @@ export const DonationsPage = () => {
                     </Tooltip>
                 </Toolbar>
             </AppBar>
-            <h1>Charity causes:</h1>
+            <Typography variant={'h3'} sx={{ color: 'black' }}>
+                Charity causes:
+            </Typography>
             {causes?.map((cause, index) => (
                 <CauzaCard key={index} cauza={cause} />
             ))}
         </Box>
-    )
+    );
 }
