@@ -9,7 +9,7 @@ export const MyDonationsPage = () => {
     const [cauze, setCauze] = useState<Cause[]>([]);
     const fetchUserCauses = async () => {
         try {
-            const response = await getUserCauseAPI();
+            const response = await getUserCauseAPI(userId);
             setCauze(response);
         } catch (error) {
             console.log("Error fetching user causes");

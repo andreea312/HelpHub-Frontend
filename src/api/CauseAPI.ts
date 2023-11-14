@@ -1,6 +1,6 @@
 import axios from "axios";
-import { baseUrl, config } from "./index";
-import { Cause } from "../shared/Types";
+import {baseUrl, config} from "./index";
+import {Cause} from "../shared/Types";
 
 const API_PATH = `${baseUrl}/cauza`;
 
@@ -17,10 +17,9 @@ export const getAllCauseAPI = async (): Promise<Cause[]> => {
         throw error;
     }
 };
-export const getUserCauseAPI = async (): Promise<Cause[]> => {
-// TODO cant find get causes for user so this does not work
+export const getUserCauseAPI = async (userID: number): Promise<Cause[]> => {
     try {
-        const response = await axios.get(`${API_PATH}`, config);
+        const response = await axios.get(`${API_PATH}/users/${userID}`, config);
         return response.data as Cause[]; // Cast to Cause[]
     } catch (error) {
         console.error("Error fetching all causes:", error);
@@ -30,8 +29,7 @@ export const getUserCauseAPI = async (): Promise<Cause[]> => {
 export const deleteCauseAPI = async (causeId: Number) => {
     try {
         await axios.delete(`${API_PATH}/${causeId}`, config);
-    }
-    catch (error) {
+    } catch (error) {
         console.error("Error fetching all causes:", error);
         throw error;
     }
