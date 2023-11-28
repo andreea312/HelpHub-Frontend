@@ -27,7 +27,8 @@ export const AddDonationPage = () => {
                 locatie: location,
                 sumaMinima: parseInt(minimumSum),
                 sumaStransa: 0,
-                moneda: currency
+                moneda: currency,
+                image: image
             }
             console.log(cause);
             await addCause?.(1, cause);

@@ -1,6 +1,6 @@
 import axios from "axios";
 import {baseUrl, config} from "./index";
-import {Cause} from "../shared/Types";
+import {Cause, CauseUpdate} from "../shared/Types";
 
 const API_PATH = `${baseUrl}/cauza`;
 
@@ -34,3 +34,27 @@ export const deleteCauseAPI = async (causeId: Number) => {
         throw error;
     }
 }
+
+export const updateCauseAPI = async (causeId:Number, updatedCause: CauseUpdate) => {
+    try {
+        console.log("1")
+        console.log(updatedCause)
+        const response = await axios.put(`${API_PATH}/${causeId}`, updatedCause, config);
+        console.log("2")
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating cause with ID ${causeId}:`, error);
+        throw error;
+    }
+};
+
+export const getCauseByIdAPI = async (causeId: number): Promise<CauseUpdate> => {
+    try {
+        const response = await axios.get(`${API_PATH}/${causeId}`, config);
+        return response.data as CauseUpdate;
+    } catch (error) {
+        console.error(`Error fetching cause with ID ${causeId}:`, error);
+        throw error;
+    }
+};
+

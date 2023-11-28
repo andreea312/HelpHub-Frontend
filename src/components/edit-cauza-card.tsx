@@ -1,8 +1,10 @@
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import {Box, Button, Card, CardContent, Typography} from "@mui/material";
 import { Cause } from "../shared/Types";
-import {deleteCauseAPI, getUserCauseAPI} from "../api/CauseAPI";
+import {deleteCauseAPI, getUserCauseAPI, updateCauseAPI} from "../api/CauseAPI";
+import {useNavigate} from "react-router-dom";
 
-export const EditCauzaCard = ({ cauza, onDelete }: { cauza: Cause, onDelete: (causeId: number) => void }) => {
+export const EditCauzaCard = ({ cauza, onDelete }: { cauza: Cause, onDelete: (causeId: number) => void  }) => {
+    const navigate = useNavigate();
     const handleDelete = async () => {
         try {
             if (cauza.id) {
@@ -12,6 +14,10 @@ export const EditCauzaCard = ({ cauza, onDelete }: { cauza: Cause, onDelete: (ca
         } catch (error) {
             console.log("Error deleting cause");
         }
+    };
+
+    const handleUpdate = async () => {
+            navigate(`/update/${cauza.id}`); // Pass the cause ID to the update route
     };
 
     return (
@@ -37,10 +43,20 @@ export const EditCauzaCard = ({ cauza, onDelete }: { cauza: Cause, onDelete: (ca
                 </Typography>
             </CardContent>
             <CardContent>
-
-                <Button sx={{background: '#B23374','&:hover': {
+                <Box mb={1}>
+                    <Button sx={{
+                        background: '#B23374', '&:hover': {
+                            backgroundColor: '#7F113C',
+                        }, color: 'black'
+                    }} onClick={handleUpdate}>
+                        Update
+                    </Button>
+                </Box>
+                <Button sx={{
+                    background: '#B23374', '&:hover': {
                         backgroundColor: '#7F113C',
-                    }, color: 'black'}} onClick={handleDelete}>
+                    }, color: 'black'
+                }} onClick={handleDelete}>
                     Delete
                 </Button>
             </CardContent>
