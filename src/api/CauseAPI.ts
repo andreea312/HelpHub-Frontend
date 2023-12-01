@@ -4,8 +4,24 @@ import {Cause, CauseUpdate} from "../shared/Types";
 
 const API_PATH = `${baseUrl}/cauza`;
 
-export const addCauseAPI = async (userID: number, cause: Cause) => {
-    await axios.post(`${API_PATH}/${userID}`, cause, config);
+export const addCauseAPI = async (userID: number, cause: Cause): Promise<Cause> => {
+    const addedCause = await axios.post(`${API_PATH}/${userID}`, cause, config);
+    return addedCause.data;
+}
+
+export const savePicturesForCause = async(cauzaID: number, images: File[]) => {
+    const pictures = new FormData();
+    images.forEach((picture, index) => {
+        console.log(picture);
+        pictures.append(`pictures`, picture);
+    });
+    console.log('saving pictures...');
+    await axios.post(`${API_PATH}/saveImages/${cauzaID}`, pictures, { headers: {'Content-Type': 'multipart/form-data'} });
+}
+
+export const getPicturesForCause = async(url: String) => {
+    const response = await axios.get(`${baseUrl}${url}`, { responseType: 'blob' });
+    return response.data;
 }
 
 export const getAllCauseAPI = async (): Promise<Cause[]> => {

@@ -13,7 +13,7 @@ export const AddDonationPage = () => {
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
     const [minimumSum, setMinimumSum] = useState('');
-    const [image, setImage] = useState<string | null>(null);
+    const [images, setImages] = useState<File[]>([]);
     const [currency, setCurrency] = useState(''); 
     const [errorMsg, setErrorMsg] = useState('');
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ export const AddDonationPage = () => {
                 sumaMinima: parseInt(minimumSum),
                 sumaStransa: 0,
                 moneda: currency,
-                image: image
+                poze: images
             }
             console.log(cause);
             await addCause?.(1, cause);
@@ -45,8 +45,10 @@ export const AddDonationPage = () => {
     }
 
     const onImageChange = (event: any) => {
-        if (event.target.files && event.target.files[0]) {
-            setImage(URL.createObjectURL(event.target.files[0]));
+        if (event.target.files) {
+            const selectedFiles = Array.from(event.target.files) as File[];
+            console.log(selectedFiles);
+            setImages(selectedFiles);
         }
     }
 
@@ -100,8 +102,8 @@ export const AddDonationPage = () => {
                     onChange={onImageChange}
                 />
             </Button>
-            {image && 
-                <img src={image} width="100" height="100" alt="preview image" />
+            {images.length > 0 && 
+                <img src={URL.createObjectURL(images[0])} width="100" height="100" alt="preview image" />
             }
             <Button 
                 sx={{marginTop: "5vh"}}

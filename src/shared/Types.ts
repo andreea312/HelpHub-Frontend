@@ -6,7 +6,7 @@ export interface Cause {
     sumaMinima: number;
     sumaStransa: number | null;
     moneda: string;
-    image: string | null;
+    poze?: File[];
 }
 
 export interface CauseUpdate {

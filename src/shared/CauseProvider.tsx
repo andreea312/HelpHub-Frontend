@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useReducer, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Cause } from "./Types";
-import { addCauseAPI, getAllCauseAPI } from '../api/CauseAPI';
+import { addCauseAPI, getAllCauseAPI, savePicturesForCause, getPicturesForCause, updateCauseAPI } from '../api/CauseAPI';
 
 type AddCauseFn = (userID: number, cause: Cause) => Promise<any>;
 type GetCausesFn = () => Promise<any>;
+type GetPictureFn = (url: String) => Promise<any>;
 
 interface CausesState {
     causes?: Cause[];
@@ -14,6 +15,7 @@ interface CausesState {
     updateError?: Error | null;
     addCause?: AddCauseFn;
     getCauses?: GetCausesFn;
+    getPicture?: GetPictureFn;
 }
 
 interface ActionProps {
@@ -49,6 +51,7 @@ const reducer: (state: CausesState, action: ActionProps) => CausesState
         case ADD_CAUSE_SUCCEDED:
             const causes = [...(state.causes || [])];
             const cause = payload.cause;
+            console.log(cause);
             causes.push(cause);
             return { ...state,  causes: causes, updating: false };
         default:
@@ -68,6 +71,7 @@ export const CauseProvider: React.FC<CauseProviderProps> = ({ children }) => {
 
     const addCause = useCallback<AddCauseFn>(addCauseCallback, []);
     const getCauses = useCallback<GetCausesFn>(getCausesCallback, []);
+    const getPicture = useCallback<GetPictureFn>(getPictureCallBack, []);
 
     async function getCausesCallback() {
         let canceled = false;
@@ -94,16 +98,28 @@ export const CauseProvider: React.FC<CauseProviderProps> = ({ children }) => {
     async function addCauseCallback(userId: number, cause: Cause){
         try {
           dispatch({ type: ADD_CAUSE_STARTED });
-          await addCauseAPI(userId, cause);
+          const addedC = await addCauseAPI(userId, cause);
+          console.log(addedC);
           console.log('saveCause succeeded');
-          dispatch({ type: ADD_CAUSE_SUCCEDED, payload: { cause: cause } });
+          console.log('saving pictures:', cause.poze);
+          await savePicturesForCause(addedC.id!, cause.poze!);
+          console.log('saved images', addedC.id, cause.poze);
+          addedC.poze = cause.poze;
+          dispatch({ type: ADD_CAUSE_SUCCEDED, payload: { cause: addedC } });
         } catch (error: any) {
-          console.log('addSong failed');
+          console.log('addCause failed');
+          console.log(error);
           dispatch({ type: ADD_CAUSE_FAILED, payload: { cause: cause } });
         }
     }
 
-    const value = { causes, fetching, fetchingError, updating, updateError, addCause, getCauses };
+    async function getPictureCallBack(url: String){
+        console.log("URL: ", url);
+        const responseData = await getPicturesForCause(url);
+        return responseData;
+    }
+
+    const value = { causes, fetching, fetchingError, updating, updateError, addCause, getCauses, getPicture };
 
     return (
         <CausesContext.Provider value={value}>
