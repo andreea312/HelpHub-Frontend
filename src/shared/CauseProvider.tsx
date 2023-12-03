@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useReducer, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Cause } from "./Types";
+import { Cause, User } from "./Types";
 import { addCauseAPI, getAllCauseAPI, savePicturesForCause, getPicturesForCause, updateCauseAPI } from '../api/CauseAPI';
 
 type AddCauseFn = (userID: number, cause: Cause) => Promise<any>;

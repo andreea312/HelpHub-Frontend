@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { TextField, Button, Box, Typography, Dialog, DialogContent } from "@mui/material";
 import { InsertPhoto } from '@mui/icons-material';
 import { Cause } from "../shared/Types";
@@ -6,8 +6,10 @@ import { addCauseAPI } from "../api/CauseAPI";
 import { useNavigate } from "react-router-dom";
 import './AddPage.css';
 import { CausesContext } from "../shared/CauseProvider";
+import { AuthContext } from "../auth/AuthProvider";
 
 export const AddDonationPage = () => {
+    const { user } = useContext(AuthContext);
     const { addCause, fetchingError } = useContext(CausesContext);
     const [description, setDescription] = useState('');
     const [title, setTitle] = useState('');
@@ -18,9 +20,18 @@ export const AddDonationPage = () => {
     const [errorMsg, setErrorMsg] = useState('');
     const navigate = useNavigate();
 
+    console.log('here', user);
+
+    useEffect(()=> {
+        if(!user.id){
+            navigate('/');   
+        }
+    }, [user.id]);
+
     const handleAddCause = async () => {
         // TO DO: Call to BE - parseFloat for mininum sum + handle error?
         try{
+            console.log(images);
             const cause: Cause = {
                 descriere: description,
                 titlu: title,
@@ -31,7 +42,8 @@ export const AddDonationPage = () => {
                 poze: images
             }
             console.log(cause);
-            await addCause?.(1, cause);
+            console.log('current user: ', user);
+            await addCause?.(user.id!, cause);
             console.log('added cause!!');
             navigate('/donations');
         } catch(error: any){

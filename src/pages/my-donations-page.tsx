@@ -1,15 +1,25 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState, useContext } from "react";
 import {AppBar, Box, Typography} from "@mui/material";
 import {Cause} from "../shared/Types";
 import {getUserCauseAPI} from "../api/CauseAPI";
 import {EditCauzaCard} from "../components/edit-cauza-card";
+import { AuthContext } from "../auth/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 export const MyDonationsPage = () => {
-    const userId = 1; // TODO: Replace with actual user ID
+    const { user } = useContext(AuthContext);
     const [cauze, setCauze] = useState<Cause[]>([]);
+    const navigate = useNavigate();
+    
+    useEffect(()=> {
+        if(!user.id){
+            navigate('/');   
+        }
+    }, [user.id]);
+
     const fetchUserCauses = async () => {
         try {
-            const response = await getUserCauseAPI(userId);
+            const response = await getUserCauseAPI(user.id!);
             setCauze(response);
         } catch (error) {
             console.log("Error fetching user causes");
@@ -17,7 +27,7 @@ export const MyDonationsPage = () => {
     };
     useEffect(() => {
         fetchUserCauses();
-    }, [userId]);
+    }, [user.id]);
     // const causesHardcoded: Cause[] = [
     //     {
     //         id: 1,

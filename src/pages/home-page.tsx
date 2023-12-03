@@ -1,13 +1,24 @@
-import {Button, Container, TextField, Typography} from '@mui/material';
-import {CSSProperties, useState} from "react";
+import { Button, Container, TextField, Typography } from '@mui/material';
+import { CSSProperties, useContext, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../auth/AuthProvider';
 export const HomePage=()=>{
+    const { login, logout, user, isAuthenticated } = useContext(AuthContext);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
-    const handleLogin=()=>{
-        navigate('/donations')
+
+    useEffect(()=> {
+        if(user.id){
+            navigate('/donations');   
+        }
+    }, [user.id]);
+
+    const handleLogin= () => {
+        console.log('login!');
+        login?.(email, password); 
     }
     const handleEmail = (event: any) => {
         setEmail(event.target.value);

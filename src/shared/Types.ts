@@ -21,3 +21,9 @@ export interface CauseUpdate {
     poze:Array<string>;
 }
 
+export interface User {
+    id?: number;
+    username?: string;
+    email?: string;
+    parola?: string;
+}
