@@ -20,6 +20,9 @@ export const HomePage=()=>{
         console.log('login!');
         login?.(email, password); 
     }
+    const handleRegisterNav= () => {
+        navigate('/register');   
+    }
     const handleEmail = (event: any) => {
         setEmail(event.target.value);
     }
@@ -31,7 +34,7 @@ export const HomePage=()=>{
             <Container sx={textWrapperStyle}>
                 <Typography variant={'h3'} > Hi!</Typography>
 
-                <Typography variant={'h3'}>This is help hub</Typography>
+                <Typography variant={'h3'}>This is HelpHub</Typography>
                 <TextField
                 value={email}
                 label='email'
@@ -47,6 +50,10 @@ export const HomePage=()=>{
                 <Button sx={{ background: '#B23374','&:hover': {
                         backgroundColor: '#7F113C',
                     }, color: 'black'}} onClick={handleLogin}>Log in</Button>
+
+                <Button sx={{ background: '#B23374','&:hover': {
+                        backgroundColor: '#7F113C',
+                    }, color: 'black'}} onClick={handleRegisterNav}>No account? Sign in</Button>
             </Container>
         </>
     )

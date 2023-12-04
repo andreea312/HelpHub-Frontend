@@ -27,3 +27,14 @@ export interface User {
     email?: string;
     parola?: string;
 }
+
+export interface RegisteredUser {
+    id?: number;
+    username?: string;
+    email?: string;
+    parola?: string;
+    fullName?: string;
+    gender?: number;
+    coins?: number;
+    level?: number;
+}
