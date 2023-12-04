@@ -14,6 +14,9 @@ import {useContext, useEffect, useState} from "react";
 import {getAllCauseAPI} from "../api/CauseAPI";
 import { CausesContext } from '../shared/CauseProvider';
 import { AuthContext } from '../auth/AuthProvider';
+import 'google-fonts'
+import background from "./fundal-cauze.png";
+
 
 
 export const DonationsPage = () => {
@@ -51,6 +54,10 @@ export const DonationsPage = () => {
         logout?.();
     }
 
+    const handleHelpHubClick = () => {
+        navigate('/donations')
+    };
+
     if(fetching){
         return (
             <Box>
@@ -61,14 +68,17 @@ export const DonationsPage = () => {
     }
 
     const commonAppBarStyles = {
-        background: '#B23374',
+        background: '#9999ff',
         height: '3%',
     };
 
     return (
-        <Box>
+        <Box style={{backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
             <AppBar position="static" sx={commonAppBarStyles}>
-                <Toolbar sx={{ justifyContent: 'flex-end', background: '#B23374' }}>
+                <Toolbar sx={{ justifyContent: 'flex-end', background: '#9999ff'}}>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontFamily: 'Pacifico, cursive', cursor: 'pointer' }} onClick={handleHelpHubClick}>
+                    HelpHub
+                </Typography>
                     <Tooltip title="Add charity cause">
                         <IconButton color="inherit" onClick={handleAddClick}>
                             <AddIcon />
@@ -86,12 +96,11 @@ export const DonationsPage = () => {
                     </Tooltip>
                 </Toolbar>
             </AppBar>
-            <Typography variant={'h3'} sx={{ color: 'black' }}>
-                Charity causes:
-            </Typography>
+          
             {causes?.map((cause, index) => (
-                <CauzaCard key={index} cauza={cause} />
+                <CauzaCard key={index} cauza={cause}/>
             ))}
+           
         </Box>
     );
 }

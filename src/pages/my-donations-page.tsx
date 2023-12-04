@@ -1,13 +1,18 @@
 import { useEffect, useState, useContext } from "react";
-import {AppBar, Box, Typography} from "@mui/material";
+import {AppBar, Box, Toolbar, Typography, Tooltip, IconButton} from "@mui/material";
 import {Cause} from "../shared/Types";
 import {getUserCauseAPI} from "../api/CauseAPI";
 import {EditCauzaCard} from "../components/edit-cauza-card";
 import { AuthContext } from "../auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AddIcon from '@mui/icons-material/Add';
+import background from "./fundal-cauze.png";
+
 
 export const MyDonationsPage = () => {
-    const { user } = useContext(AuthContext);
+    const { user, logout } = useContext(AuthContext);
     const [cauze, setCauze] = useState<Cause[]>([]);
     const navigate = useNavigate();
     
@@ -42,17 +47,53 @@ export const MyDonationsPage = () => {
     const handleCauseDelete = (deletedCauseId: Number) => {
         setCauze(cauze.filter((cause) => cause.id !== deletedCauseId));
     };
+
+    const handleAddClick = () => {
+        navigate('/add')
+    };
+    const handleAccountClick = () => {
+        navigate('/mydonations')
+    };
+
+    const handleHelpHubClick = () => {
+        navigate('/donations')
+    };
+
+    const handleLogout = () => {
+        logout?.();
+    }
+
     const commonAppBarStyles = {
-        background: '#B23374',
-        height: '9vh',
+        background: '#9999ff',
+        height: '3%',
     };
 
     return (
-        <Box>
-            <AppBar position="static" sx={commonAppBarStyles}> </AppBar>
-                <Typography variant={'h3'} sx={{color: 'black'}}>
-                    My Charity Causes
+        <Box style={{backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
+            <AppBar position="static" sx={commonAppBarStyles}>
+                <Toolbar sx={{ justifyContent: 'flex-end', background: '#9999ff'}}>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontFamily: 'Pacifico, cursive', cursor: 'pointer' }} onClick={handleHelpHubClick}>
+                    HelpHub
                 </Typography>
+                    <Tooltip title="Add charity cause">
+                        <IconButton color="inherit" onClick={handleAddClick}>
+                            <AddIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="My charity causes">
+                        <IconButton color="inherit" onClick={handleAccountClick}>
+                            <AccountCircleIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Logout">
+                        <IconButton color="inherit" onClick={handleLogout}>
+                            <LogoutIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Toolbar>
+            </AppBar>
+                
+                
                 {cauze.map((cauza) => (
                     <EditCauzaCard key={cauza.id} cauza={cauza} onDelete={handleCauseDelete}/>
                 ))}

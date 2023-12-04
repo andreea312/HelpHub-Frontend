@@ -1,11 +1,21 @@
 import {CSSProperties, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Box, Button, TextField, Typography, Dialog, DialogContent, Container} from "@mui/material";
+import {Box, Button, TextField, Typography, Dialog, DialogContent, Container, AppBar, Toolbar, Tooltip, IconButton} from "@mui/material";
 import {InsertPhoto} from '@mui/icons-material';
 import {Cause, CauseUpdate} from "../shared/Types";
 import {updateCauseAPI, getCauseByIdAPI} from "../api/CauseAPI";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../auth/AuthProvider";
+import { useContext } from "react";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AddIcon from '@mui/icons-material/Add';
+import background from "./fundal-edit-add.png";
+
+
 
 export const UpdateDonationPage = () => {
+    const { logout } = useContext(AuthContext);
     const {causeId} = useParams();
     const [cause, setCause] = useState<CauseUpdate | null>(null);
     const [id, setId] = useState<number>(0);
@@ -19,6 +29,8 @@ export const UpdateDonationPage = () => {
     const [sustinator, setSustinator] = useState<number>(0);
     const [errorMsg, setErrorMsg] = useState('');
     const [updateClicked, setUpdateClicked] = useState(false);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchCause = async () => {
@@ -78,9 +90,54 @@ export const UpdateDonationPage = () => {
     //     }
     // };
 
+    const handleAddClick = () => {
+        navigate('/add')
+    };
+    const handleAccountClick = () => {
+        navigate('/mydonations')
+    };
+
+    const handleLogout = () => {
+        logout?.();
+    }
+
+    const handleHelpHubClick = () => {
+        navigate('/donations')
+    };
+
+    const commonAppBarStyles = {
+        background: '#9999ff',
+        height: '3%',
+    };
+
     return (
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
+        <AppBar position="static" sx={commonAppBarStyles}>
+                <Toolbar sx={{ justifyContent: 'flex-end', background: '#9999ff'}}>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontFamily: 'Pacifico, cursive', cursor: 'pointer'}} onClick={handleHelpHubClick}>
+                    HelpHub
+                </Typography>
+                    <Tooltip title="Add charity cause">
+                        <IconButton color="inherit" onClick={handleAddClick}>
+                            <AddIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="My charity causes">
+                        <IconButton color="inherit" onClick={handleAccountClick}>
+                            <AccountCircleIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Logout">
+                        <IconButton color="inherit" onClick={handleLogout}>
+                            <LogoutIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Toolbar>
+            </AppBar>
         <Container sx={textWrapperStyle}>
-            <h1>Update Charity Cause</h1>
+            <h1 style={{color: '#990073', fontWeight: 'bold', textTransform: 'none', fontFamily: 'Pacifico, cursive'}}>Update Charity Cause</h1>
+            <br></br>
+            <br></br>
             <TextField sx={{marginBottom: "15px", width:"50vw"}} label="Title" onChange={(e) => setTitle(e.target.value)} required
                        value={title}/>
             <TextField sx={{marginBottom: "15px", width:"50vw"}} label="Description" onChange={(e) => setDescription(e.target.value)}
@@ -96,10 +153,12 @@ export const UpdateDonationPage = () => {
                 value={minimumSum !== '' ? minimumSum.toString() : ''}
             />
             <TextField  sx={{marginBottom: "15px", width:"50vw"}} label="Currency" onChange={(e) => setCurrency(e.target.value)} required value={currency}/>
+            <br></br>
+            <br></br>
             <Button
                 sx={{
-                    marginBottom: "5vh", background: '#B23374', '&:hover': {
-                        backgroundColor: '#7F113C',
+                    marginBottom: "5vh", background: '#9999ff', '&:hover': {
+                        backgroundColor: '#ccccff',
                     }, color: 'black', width: "15vw"
                 }}
                 type="submit"
@@ -115,6 +174,7 @@ export const UpdateDonationPage = () => {
             </Dialog>
 
         </Container>
+        </Box>
     );
 };
 

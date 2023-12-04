@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { TextField, Button, Box, Typography, Dialog, DialogContent } from "@mui/material";
+import { TextField, Button, Box, Typography, Dialog, DialogContent, AppBar, Toolbar, Tooltip, IconButton } from "@mui/material";
 import { InsertPhoto } from '@mui/icons-material';
 import { Cause } from "../shared/Types";
 import { addCauseAPI } from "../api/CauseAPI";
@@ -7,9 +7,14 @@ import { useNavigate } from "react-router-dom";
 import './AddPage.css';
 import { CausesContext } from "../shared/CauseProvider";
 import { AuthContext } from "../auth/AuthProvider";
+import background from "./fundal-edit-add.png";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AddIcon from '@mui/icons-material/Add';
+
 
 export const AddDonationPage = () => {
-    const { user } = useContext(AuthContext);
+    const { user, logout } = useContext(AuthContext);
     const { addCause, fetchingError } = useContext(CausesContext);
     const [description, setDescription] = useState('');
     const [title, setTitle] = useState('');
@@ -64,39 +69,87 @@ export const AddDonationPage = () => {
         }
     }
 
+    const handleAddClick = () => {
+        navigate('/add')
+    };
+    const handleAccountClick = () => {
+        navigate('/mydonations')
+    };
+
+    const handleLogout = () => {
+        logout?.();
+    }
+
+    const handleHelpHubClick = () => {
+        navigate('/donations')
+    };
+
+    const commonAppBarStyles = {
+        background: '#9999ff',
+        height: '3%',
+    };
+
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <h1>Add New Charity Cause</h1>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
+            <AppBar position="static" sx={commonAppBarStyles}>
+                <Toolbar sx={{ justifyContent: 'flex-end', background: '#9999ff'}}>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontFamily: 'Pacifico, cursive', cursor: 'pointer'}} onClick={handleHelpHubClick}>
+                    HelpHub
+                </Typography>
+                    <Tooltip title="Add charity cause">
+                        <IconButton color="inherit" onClick={handleAddClick}>
+                            <AddIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="My charity causes">
+                        <IconButton color="inherit" onClick={handleAccountClick}>
+                            <AccountCircleIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Logout">
+                        <IconButton color="inherit" onClick={handleLogout}>
+                            <LogoutIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Toolbar>
+            </AppBar>
+            <h1 style={{color: '#990073', fontWeight: 'bold', textTransform: 'none', fontFamily: 'Pacifico, cursive'}}>Add New Charity Cause</h1>
+            <br></br>
             <form className="form">
-                <label className="formLabel">Title: </label>
-                <TextField 
+                <label className="formLabel" style={{color: '#990073', fontWeight: 'bold', textTransform: 'none', fontFamily: 'Pacifico, cursive'}}>
+                    Title: </label>
+                <TextField
                     label="Title"
                     onChange={e => setTitle(e.target.value)}
                     required
                     value={title}
                 />
-                <label className="formLabel">Description: </label>
+                <label className="formLabel" style={{color: '#990073', fontWeight: 'bold', textTransform: 'none', fontFamily: 'Pacifico, cursive'}}>
+                    Description: </label>
                 <TextField 
                     label="Description"
                     onChange={e => setDescription(e.target.value)}
                     required
                     value={description}
                 />
-                <label className="formLabel">Location: </label>
+                <label className="formLabel" style={{color: '#990073', fontWeight: 'bold', textTransform: 'none', fontFamily: 'Pacifico, cursive'}}>
+                    Location: </label>
                 <TextField 
                     label="Location"
                     onChange={e => setLocation(e.target.value)}
                     required
                     value={location}
                 />
-                <label className="formLabel">Miminum Sum: </label>
+                <label className="formLabel" style={{color: '#990073', fontWeight: 'bold', textTransform: 'none', fontFamily: 'Pacifico, cursive'}}>
+                    Miminum Sum: </label>
                 <TextField 
                     label="Sum"
                     onChange={e => setMinimumSum(e.target.value)}
                     required
                     value={minimumSum}
                 />
-                <label className="formLabel">Currency: </label>
+                <label className="formLabel"  style={{color: '#990073', fontWeight: 'bold', textTransform: 'none', fontFamily: 'Pacifico, cursive'}}>
+                    Currency: </label>
                 <TextField 
                     label="Currency"
                     onChange={e => setCurrency(e.target.value)}
@@ -104,8 +157,8 @@ export const AddDonationPage = () => {
                     value={currency}
                 />
             </form>
-            <Button variant="contained" component="label" sx={{marginBottom: "5vh", background: '#B23374','&:hover': {
-                    backgroundColor: '#7F113C',
+            <Button variant="contained" component="label" sx={{marginBottom: "5vh", background: '#9999ff','&:hover': {
+                    backgroundColor: '#ccccff',
                 }, color: 'black'}}>
                 <InsertPhoto></InsertPhoto> Choose Picture
                 <input
