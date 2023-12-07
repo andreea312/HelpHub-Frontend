@@ -2,6 +2,8 @@ import {Card, CardContent, Typography} from "@mui/material";
 import {Cause} from "../shared/Types";
 import { useContext, useEffect, useState } from "react";
 import { CausesContext } from "../shared/CauseProvider";
+import {User} from "../shared/Types";
+
 
 export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
     const { getPicture } = useContext(CausesContext);

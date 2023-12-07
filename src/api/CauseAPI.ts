@@ -57,6 +57,7 @@ export const updateCauseAPI = async (causeId:Number, updatedCause: CauseUpdate) 
         console.log(updatedCause)
         const response = await axios.put(`${API_PATH}/${causeId}`, updatedCause, config);
         console.log("2")
+        console.log("aaaaaaaaaaaaaaaaaaaaa")
         return response.data;
     } catch (error) {
         console.error(`Error updating cause with ID ${causeId}:`, error);

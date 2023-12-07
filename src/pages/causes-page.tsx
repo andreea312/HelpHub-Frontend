@@ -1,66 +1,70 @@
-import { useEffect, useState, useContext } from "react";
-import {AppBar, Box, Toolbar, Typography, Tooltip, IconButton} from "@mui/material";
-import {Cause} from "../shared/Types";
-import {getUserCauseAPI} from "../api/CauseAPI";
-import {EditCauzaCard} from "../components/edit-cauza-card";
-import { AuthContext } from "../auth/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import {
+    AppBar,
+    Box,
+    IconButton,
+    Toolbar, Tooltip, CircularProgress, Typography
+} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from 'react-router-dom';
+import {CauzaCard} from '../components/cauza-card';
+import {Cause} from "../shared/Types";
+import {useContext, useEffect, useState} from "react";
+import {getAllCauseAPI} from "../api/CauseAPI";
+import { CausesContext } from '../shared/CauseProvider';
+import { AuthContext } from '../auth/AuthProvider';
+import 'google-fonts'
 import background from "./fundal-cauze.png";
 
 
-export const MyDonationsPage = () => {
+
+export const CausesPage = () => {
     const { user, logout } = useContext(AuthContext);
-    const [cauze, setCauze] = useState<Cause[]>([]);
+    const { causes, getCauses, fetching } = useContext(CausesContext);
     const navigate = useNavigate();
-    
+
     useEffect(()=> {
         if(!user.id){
             navigate('/');   
         }
     }, [user.id]);
 
-    const fetchUserCauses = async () => {
+    const fetchCauses = async () => {
         try {
-            const response = await getUserCauseAPI(user.id!);
-            setCauze(response);
+            await getCauses?.();
         } catch (error) {
-            console.log("Error fetching user causes");
+            console.log("Error fetching causes", error);
         }
     };
+
     useEffect(() => {
-        fetchUserCauses();
-    }, [user.id]);
-    // const causesHardcoded: Cause[] = [
-    //     {
-    //         id: 1,
-    //         descriere: "Strangere de fonduri pentru renovarea scolilor",
-    //         titlu: "Renovare Scoli",
-    //         locatie: "Orasul X",
-    //         sumaMinima: 10000,
-    //         sumaStransa: 5000,
-    //         moneda: "EUR"
-    //     }
-    // ];
-    const handleCauseDelete = (deletedCauseId: Number) => {
-        setCauze(cauze.filter((cause) => cause.id !== deletedCauseId));
-    };
+        console.log('fetching...');
+        fetchCauses();
+    }, []);
 
     const handleAddClick = () => {
         navigate('/add')
     };
     const handleAccountClick = () => {
-        navigate('/mydonations')
-    };
-
-    const handleHelpHubClick = () => {
-        navigate('/donations')
+        navigate('/mycauses')
     };
 
     const handleLogout = () => {
         logout?.();
+    }
+
+    const handleHelpHubClick = () => {
+        navigate('/causes')
+    };
+
+    if(fetching){
+        return (
+            <Box>
+                <CircularProgress />
+                <p>Loading...</p>
+            </Box>
+        )
     }
 
     const commonAppBarStyles = {
@@ -92,12 +96,11 @@ export const MyDonationsPage = () => {
                     </Tooltip>
                 </Toolbar>
             </AppBar>
-                
-                
-                {cauze.map((cauza) => (
-                    <EditCauzaCard key={cauza.id} cauza={cauza} onDelete={handleCauseDelete}/>
-                ))}
-
+          
+            {causes?.map((cause, index) => (
+                <CauzaCard key={index} cauza={cause}/>
+            ))}
+           
         </Box>
     );
 }

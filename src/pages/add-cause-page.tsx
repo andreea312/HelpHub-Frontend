@@ -13,7 +13,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 
 
-export const AddDonationPage = () => {
+export const AddCausePage = () => {
     const { user, logout } = useContext(AuthContext);
     const { addCause, fetchingError } = useContext(CausesContext);
     const [description, setDescription] = useState('');
@@ -50,7 +50,7 @@ export const AddDonationPage = () => {
             console.log('current user: ', user);
             await addCause?.(user.id!, cause);
             console.log('added cause!!');
-            navigate('/donations');
+            navigate('/myCauses');
         } catch(error: any){
             console.log('error: '+error);
             setErrorMsg(fetchingError?.message || 'Error at add!');
@@ -73,7 +73,7 @@ export const AddDonationPage = () => {
         navigate('/add')
     };
     const handleAccountClick = () => {
-        navigate('/mydonations')
+        navigate('/mycauses')
     };
 
     const handleLogout = () => {
@@ -81,7 +81,7 @@ export const AddDonationPage = () => {
     }
 
     const handleHelpHubClick = () => {
-        navigate('/donations')
+        navigate('/causes')
     };
 
     const commonAppBarStyles = {

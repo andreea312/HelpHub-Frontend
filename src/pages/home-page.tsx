@@ -15,7 +15,7 @@ export const HomePage=()=>{
 
     useEffect(()=> {
         if(user.id){
-            navigate('/donations');   
+            navigate('/causes');   
         }
     }, [user.id]);
 
@@ -35,6 +35,15 @@ export const HomePage=()=>{
     return(
         <>
         <div style={wrapperStyle1}>
+            <Container sx={wrapperStyleLeft}>
+                
+                <Typography variant={'h2'} sx={{ marginTop: '390px', color: '#551daa'}}>we care.</Typography>
+                
+                <Typography variant={'h2'} sx={{ marginTop: '30px', color: '#551daa' }}>we support.</Typography>
+                
+                <Typography variant={'h2'} sx={{ marginTop: '30px', color: '#551daa' }}>we change lives.</Typography>
+            
+            </Container>
             <Container sx={wrapperStyle2}>
                 <Typography variant={'h3'} sx={{ fontFamily: 'Pacifico, cursive' }}>HelpHub</Typography>
                 <Typography variant={'h4'}>Login</Typography>
@@ -63,6 +72,9 @@ export const HomePage=()=>{
                         backgroundColor: '#ccccff',
                     }, color: 'black', textTransform: 'none', width: '30%', fontFamily: 'Pacifico, cursive'}} onClick={handleRegisterNav}>Register</Button>
             </Container>
+            <Container sx={wrapperStyleRight}>
+                
+            </Container>
         </div>
         </>
         
@@ -76,6 +88,7 @@ const wrapperStyle1: CSSProperties = {
     backgroundImage: `url(${background})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
+    display: 'flex',
 };
 
 const wrapperStyle2: CSSProperties = {
@@ -90,4 +103,18 @@ const wrapperStyle2: CSSProperties = {
     border: '1px solid black',
     borderRadius: '15px',
     padding: '16px',
+    margin: '0px'
+};
+
+const wrapperStyleLeft: CSSProperties = {
+    backgroundColor: 'transparent',
+    height: '100vh',
+    margin: '0px',
+    width: '38.5%'
+};
+const wrapperStyleRight: CSSProperties = {
+    backgroundColor: 'transparent',
+    height: '100vh',
+    margin: '0px',
+    width: '38.5%'
 };

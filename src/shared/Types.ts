@@ -18,7 +18,7 @@ export interface CauseUpdate {
     sumaStransa: number | null;
     moneda: string;
     nrSustinatori: number;
-    poze:Array<string>;
+    poze?:File[];
 }
 
 export interface User {
@@ -26,6 +26,10 @@ export interface User {
     username?: string;
     email?: string;
     parola?: string;
+    fullName?: string;
+    gender?: number;
+    coins?: number;
+    level?: number;
 }
 
 export interface RegisteredUser {

@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import {Box, Button, TextField, Typography, Dialog, DialogContent, Container, AppBar, Toolbar, Tooltip, IconButton} from "@mui/material";
 import {InsertPhoto} from '@mui/icons-material';
 import {Cause, CauseUpdate} from "../shared/Types";
-import {updateCauseAPI, getCauseByIdAPI} from "../api/CauseAPI";
+import {updateCauseAPI, getCauseByIdAPI, savePicturesForCause} from "../api/CauseAPI";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/AuthProvider";
 import { useContext } from "react";
@@ -14,7 +14,7 @@ import background from "./fundal-edit-add.png";
 
 
 
-export const UpdateDonationPage = () => {
+export const UpdateCausePage = () => {
     const { logout } = useContext(AuthContext);
     const {causeId} = useParams();
     const [cause, setCause] = useState<CauseUpdate | null>(null);
@@ -24,7 +24,7 @@ export const UpdateDonationPage = () => {
     const [location, setLocation] = useState('');
     const [minimumSum, setMinimumSum] = useState<number | "">('');
     const [sumaStransa, setSumaStransa] = useState<number>(0);
-    const [image, setImage] = useState<Array<string>>(new Array<string>());
+    const [images, setImages] = useState<File[]>([]);
     const [currency, setCurrency] = useState('');
     const [sustinator, setSustinator] = useState<number>(0);
     const [errorMsg, setErrorMsg] = useState('');
@@ -44,7 +44,9 @@ export const UpdateDonationPage = () => {
                     setLocation(response.locatie || '');
                     setMinimumSum(Number(response.sumaMinima) || '');
                     setCurrency(response.moneda || '');
-                    setImage(response.poze || []);
+                    //setImages(response.poze || []);
+                    // Convert array of strings to array of File objects
+                    setImages(response.poze || []);
                     setSustinator(response.nrSustinatori || 0);
                     // Fetch sumaStransa here if needed
                 }
@@ -69,19 +71,31 @@ export const UpdateDonationPage = () => {
                 sumaStransa: sumaStransa,
                 moneda: currency,
                 nrSustinatori: sustinator,
-                poze: image
+                poze: images
             });
-
+            console.log(images.length)
+            await savePicturesForCause(Number(causeId), images)
+            
             setUpdateClicked(true);
+            
         } catch (error) {
             console.log("Error updating cause");
             setErrorMsg("Failed to update cause. Please try again.");
         }
     };
 
+    const onImageChange = (event: any) => {
+        if (event.target.files) {
+            const selectedFiles = Array.from(event.target.files) as File[];
+            console.log(selectedFiles);
+            setImages(selectedFiles);
+        }
+    }
+
     const handleClosePopup = () => {
         setUpdateClicked(false);
         setErrorMsg('');
+        navigate('/myCauses');
     };
 
     // const onImageChange = (event: any) => {
@@ -94,7 +108,7 @@ export const UpdateDonationPage = () => {
         navigate('/add')
     };
     const handleAccountClick = () => {
-        navigate('/mydonations')
+        navigate('/mycauses')
     };
 
     const handleLogout = () => {
@@ -102,13 +116,22 @@ export const UpdateDonationPage = () => {
     }
 
     const handleHelpHubClick = () => {
-        navigate('/donations')
+        navigate('/causes')
     };
 
     const commonAppBarStyles = {
         background: '#9999ff',
         height: '3%',
     };
+
+    useEffect(() => {
+        // Cleanup function to revoke the object URL
+        return () => {
+            if (images.length > 0) {
+                URL.revokeObjectURL(URL.createObjectURL(new Blob(images)));
+            }
+        };
+    }, [images]);
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
@@ -153,6 +176,21 @@ export const UpdateDonationPage = () => {
                 value={minimumSum !== '' ? minimumSum.toString() : ''}
             />
             <TextField  sx={{marginBottom: "15px", width:"50vw"}} label="Currency" onChange={(e) => setCurrency(e.target.value)} required value={currency}/>
+            
+            <Button variant="contained" component="label" sx={{marginBottom: "5vh", background: '#9999ff','&:hover': {
+                    backgroundColor: '#ccccff',
+                }, color: 'black'}}>
+                <InsertPhoto></InsertPhoto> Choose Picture
+                <input
+                    type="file"
+                    hidden
+                    onChange={onImageChange}
+                />
+            </Button>
+            {images.length > 0 && 
+                <img src={URL.createObjectURL(new Blob(images))} width="100" height="100" alt="preview image" />
+            }
+            
             <br></br>
             <br></br>
             <Button

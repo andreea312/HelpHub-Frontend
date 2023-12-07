@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { UsersContext } from '../auth/RegisterProvider';
 import { RegisteredUser } from "../shared/Types";
 import { Label } from '@mui/icons-material';
-import background from "./fundal-register.png";
+import background from "./fundal.png";
 
 
 
@@ -133,4 +133,17 @@ const wrapperStyle2: CSSProperties = {
     border: '1px solid black',
     borderRadius: '15px',
     padding: '16px',
+};
+
+const wrapperStyleLeft: CSSProperties = {
+    backgroundColor: 'transparent',
+    height: '100vh',
+    margin: '0px',
+    width: '38.5%'
+};
+const wrapperStyleRight: CSSProperties = {
+    backgroundColor: 'transparent',
+    height: '100vh',
+    margin: '0px',
+    width: '38.5%'
 };
