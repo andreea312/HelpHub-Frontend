@@ -6,6 +6,9 @@ import {User} from "../shared/Types";
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PaymentIcon from '@mui/icons-material/Payment';
+import SadFaceIcon from '@mui/icons-material/MoodBad';
+import HappyFaceIcon from '@mui/icons-material/Mood';
+
 
 
 
@@ -213,7 +216,20 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                         Amount Raised: {cauza.sumaStransa} {cauza.moneda}
                     </Typography>
 
-                    <LinearProgress variant="determinate" value={percentage} sx={{ marginTop: '10px' }} />
+                    {/* Linear Progress with Sad and Happy Icons */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px' }}>
+                        <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <LinearProgress variant="determinate" value={percentage} sx={{ width: '90%' }} />
+                            {/* Conditional rendering for happy or sad face */}
+                            {percentage >= 50 ? (
+                                <HappyFaceIcon sx={{ fontSize: '20px', color: '#555555' }} />
+                            ) : (
+                                <SadFaceIcon sx={{ fontSize: '20px', color: '#555555' }} />
+                            )}
+                            {/* Display percentage */}
+                            <Typography variant="body2" sx={{ color: '#555555', marginLeft: '5px' }}>{percentage.toFixed(2)}%</Typography>
+                        </div>
+                    </div>
 
                 </div>
             </CardContent>
