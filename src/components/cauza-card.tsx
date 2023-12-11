@@ -24,7 +24,8 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
     const [imageUrl, setImageUrl] = useState('');
     const [isModalOpen, setModalOpen] = useState(false);
     const [cardNumber, setCardNumber] = useState('');
-    const [expiryDate, setExpiryDate] = useState('');
+    const [expiryMonth, setExpiryMonth] = useState('');
+    const [expiryYear, setExpiryYear] = useState('');
     const [cvv, setCvv] = useState('');
     const [percentage, setPercentage] = useState(((cauza.sumaStransa || 0) /cauza.sumaMinima) * 100);
     const [sumaStransa, setSumaStransa] = useState(cauza.sumaStransa);
@@ -35,7 +36,8 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
     // State for validation errors
     const [errors, setErrors] = useState({
         cardNumber: '',
-        expiryDate: '',
+        expiryYear: '',
+        expiryMonth: '',
         cvv: '',
     });
 
@@ -79,11 +81,23 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
         }
     };
 
-    const validateExpiryDate = () => {
-        if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiryDate)) {
-            setErrors((prevErrors) => ({ ...prevErrors, expiryDate: 'Invalid expiry date' }));
+    const validateExpiryMonth = () => {
+        const month = parseInt(expiryMonth, 10);
+        if (!(month >= 1 && month <= 12)) {
+            setErrors((prevErrors) => ({ ...prevErrors, expiryMonth: 'Invalid month' }));
         } else {
-            setErrors((prevErrors) => ({ ...prevErrors, expiryDate: '' }));
+            setErrors((prevErrors) => ({ ...prevErrors, expiryMonth: '' }));
+        }
+    };
+    
+    const validateExpiryYear = () => {
+        const currentYear = (new Date().getFullYear()) % 100;
+        const year = (parseInt(expiryYear, 10)) % 100;
+    
+        if (!(year >= currentYear && year <= currentYear + 10)) {
+            setErrors((prevErrors) => ({ ...prevErrors, expiryYear: 'Invalid year' }));
+        } else {
+            setErrors((prevErrors) => ({ ...prevErrors, expiryYear: '' }));
         }
     };
 
@@ -97,9 +111,10 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
 
     const handleDonateClick = () => {
         validateCardNumber();
-        validateExpiryDate();
+        validateExpiryMonth();
+        validateExpiryYear();
         validateCvv();
-        if (!errors.cardNumber && !errors.expiryDate && !errors.cvv) {
+        if (!errors.cardNumber && !errors.expiryYear && !errors.expiryMonth && !errors.cvv) {
             handleDonate();
         }
     };
@@ -198,26 +213,47 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                                         ),
                                         }}
                                     />
+                                    <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                                        <TextField
+                                            label="Month"
+                                            variant="outlined"
+                                            margin="dense" 
+                                            fullWidth
+                                            value={expiryMonth}
+                                            onChange={(e) => setExpiryMonth(e.target.value)}
+                                            onBlur={validateExpiryMonth}
+                                            error={Boolean(errors.expiryMonth)}
+                                            helperText={errors.expiryMonth}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <EventIcon />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+
+                                        <TextField
+                                            label="Year"
+                                            variant="outlined"
+                                            margin="dense" 
+                                            fullWidth
+                                            value={expiryYear}
+                                            onChange={(e) => setExpiryYear(e.target.value)}
+                                            onBlur={validateExpiryYear}
+                                            error={Boolean(errors.expiryYear)}
+                                            helperText={errors.expiryYear}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <EventIcon />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                    </div>
                                     <TextField
-                                        label="Expiration Date"
-                                        variant="outlined"
-                                        margin="dense" 
-                                        fullWidth
-                                        value={expiryDate}
-                                        onChange={(e) => setExpiryDate(e.target.value)}
-                                        onBlur={validateExpiryDate}
-                                        error={Boolean(errors.expiryDate)}
-                                        helperText={errors.expiryDate}
-                                        InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                            <EventIcon />
-                                            </InputAdornment>
-                                        ),
-                                        }}
-                                    />
-                                    <TextField
-                                        label="CVV"
+                                        label="CVC"
                                         variant="outlined"
                                         margin="dense"
                                         fullWidth
