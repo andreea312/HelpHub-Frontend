@@ -141,7 +141,7 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
 
 
                         <Modal open={isModalOpen} onClose={closeModal}>
-                            <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 600, height: 700, borderRadius: '10px', border: '1px solid #9999ff', backgroundColor: '#e6e6ff', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 500, height: 700, borderRadius: '10px', border: '1px solid #9999ff', backgroundColor: '#e6e6ff', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <div style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer', color: '#990073' }}>
                                     <CancelIcon onClick={closeModal} />
                                 </div>

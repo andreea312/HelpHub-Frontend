@@ -48,7 +48,7 @@ export const UserCard = ({ user }: { user: User } ) => {
                         Gender: {user.gender}
                     </Typography>
                     <Typography variant="body1" component="p" sx={{color: '#330066', fontWeight: 'bold'}}>
-                        Coins: {user.coins}
+                        Points: {user.coins}
                     </Typography>
                     <Typography variant="body1" component="p" sx={{color: '#330066', fontWeight: 'bold'}}>
                         Level: {user.level}
