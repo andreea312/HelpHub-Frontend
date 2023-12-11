@@ -29,7 +29,7 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
     const [cvv, setCvv] = useState('');
     const [percentage, setPercentage] = useState(((cauza.sumaStransa || 0) /cauza.sumaMinima) * 100);
     const [sumaStransa, setSumaStransa] = useState(cauza.sumaStransa);
-    const [currency, setCurrency] = useState('');
+    const [currency, setCurrency] = useState(cauza.moneda);
     const [sumaDonata, setSumaDonata] = useState(0);
 
 
@@ -70,7 +70,7 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
             }
         };
         fetchData();
-    }, [cauza.poze, cauza.sumaStransa, cauza.sumaMinima]);
+    }, [cauza.poze]);
 
 
     const validateCardNumber = () => {
