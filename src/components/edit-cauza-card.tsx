@@ -4,6 +4,7 @@ import {deleteCauseAPI, getUserCauseAPI, updateCauseAPI} from "../api/CauseAPI";
 import {useNavigate} from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { CausesContext } from "../shared/CauseProvider";
+import LocationIcon from '@mui/icons-material/LocationOn';
 
 
 export const EditCauzaCard = ({ cauza, onDelete }: { cauza: Cause, onDelete: (causeId: number) => void  }) => {
@@ -70,8 +71,9 @@ export const EditCauzaCard = ({ cauza, onDelete }: { cauza: Cause, onDelete: (ca
                         {cauza.descriere}
                     </Typography>
                     <br></br>
-                    <Typography variant="body2" component="p">
-                        Location: {cauza.locatie}
+                    <Typography variant="body2" component="p" sx={{ display: 'flex', alignItems: 'center' }}>
+                        <LocationIcon sx={{ fontSize: '17px', color: '#999999', marginRight: '5px' }} />
+                        {cauza.locatie}
                     </Typography>
                     <Typography variant="body2" component="p">
                         Minimum Amount: {cauza.sumaMinima} {cauza.moneda}

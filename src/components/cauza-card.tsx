@@ -15,7 +15,7 @@ import EventIcon from '@mui/icons-material/Event';
 import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import PaymentsIcon from '@mui/icons-material/Payments';
-
+import LocationIcon from '@mui/icons-material/LocationOn';
 
 
 export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
@@ -32,8 +32,6 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
     const [currency, setCurrency] = useState(cauza.moneda);
     const [sumaDonata, setSumaDonata] = useState(0);
 
-
-    // State for validation errors
     const [errors, setErrors] = useState({
         cardNumber: '',
         expiryYear: '',
@@ -170,6 +168,7 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                                         Donate for "{cauza.titlu}" charity cause
                                     </Typography>
                                     <br></br> 
+
                                     {/* Donation amount and currency fields */}
                                     <TextField margin="dense"  label="Amount" variant="outlined" value = {sumaDonata} onChange={(e) => setSumaDonata(parseInt(e.target.value))} type="number" fullWidth />
                                     <FormControl margin="dense" variant="outlined" fullWidth>
@@ -294,8 +293,9 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                         {cauza.descriere}
                     </Typography>
                     <br></br>
-                    <Typography variant="body2" component="p">
-                        Location: {cauza.locatie}
+                    <Typography variant="body2" component="p" sx={{ display: 'flex', alignItems: 'center' }}>
+                        <LocationIcon sx={{ fontSize: '17px', color: '#999999', marginRight: '5px' }} />
+                        {cauza.locatie}
                     </Typography>
                     <Typography variant="body2" component="p">
                         Minimum Amount: {cauza.sumaMinima} {cauza.moneda}
@@ -305,7 +305,7 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                     </Typography>
 
                     {/* Linear Progress with Sad and Happy Icons */}
-                   
+                    
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px' }}>
                         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
                             <LinearProgress variant="determinate" value={percentage} sx={{ width: '90%' }} />
@@ -315,7 +315,6 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                             ) : (
                                 <SadFaceIcon sx={{ fontSize: '20px', color: '#555555' }} />
                             )}
-                            {/* Display percentage */}
                             <Typography variant="body2" sx={{ color: '#555555', marginLeft: '5px' }}>{percentage.toFixed(2)}%</Typography>
                         </div>
                     </div>
