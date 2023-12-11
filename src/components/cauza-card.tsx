@@ -8,18 +8,23 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import PaymentIcon from '@mui/icons-material/Payment';
 import SadFaceIcon from '@mui/icons-material/MoodBad';
 import HappyFaceIcon from '@mui/icons-material/Mood';
-
+import { AuthContext } from "../auth/AuthProvider";
+import { donateToCauseAPI } from "../api/CauseAPI";
 
 
 
 export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
+    const { user } = useContext(AuthContext);
     const { getPicture } = useContext(CausesContext);
     const [imageUrl, setImageUrl] = useState('');
     const [isModalOpen, setModalOpen] = useState(false);
     const [cardNumber, setCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
-    const [percentage, setPercentage] = useState(0);
+    const [percentage, setPercentage] = useState(((cauza.sumaStransa || 0) /cauza.sumaMinima) * 100);
+    const [sumaStransa, setSumaStransa] = useState(cauza.sumaStransa);
+    const [currency, setCurrency] = useState('');
+    const [sumaDonata, setSumaDonata] = useState(0);
 
 
     // State for validation errors
@@ -56,11 +61,6 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                 const dataUrl = URL.createObjectURL(rawUrl);
                 setImageUrl(dataUrl);
             }
-            if (cauza.sumaStransa == null){
-                cauza.sumaStransa  = 0
-            }
-            const newPercentage = (cauza.sumaStransa / cauza.sumaMinima) * 100;
-            setPercentage(newPercentage);
         };
         fetchData();
     }, [cauza.poze, cauza.sumaStransa, cauza.sumaMinima]);
@@ -68,25 +68,25 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
 
     const validateCardNumber = () => {
         if (!/^\d{16}$/.test(cardNumber)) {
-        setErrors((prevErrors) => ({ ...prevErrors, cardNumber: 'Invalid card number' }));
+            setErrors((prevErrors) => ({ ...prevErrors, cardNumber: 'Invalid card number' }));
         } else {
-        setErrors((prevErrors) => ({ ...prevErrors, cardNumber: '' }));
+            setErrors((prevErrors) => ({ ...prevErrors, cardNumber: '' }));
         }
     };
 
     const validateExpiryDate = () => {
         if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiryDate)) {
-        setErrors((prevErrors) => ({ ...prevErrors, expiryDate: 'Invalid expiry date' }));
+            setErrors((prevErrors) => ({ ...prevErrors, expiryDate: 'Invalid expiry date' }));
         } else {
-        setErrors((prevErrors) => ({ ...prevErrors, expiryDate: '' }));
+            setErrors((prevErrors) => ({ ...prevErrors, expiryDate: '' }));
         }
     };
 
     const validateCvv = () => {
         if (!/^\d{3}$/.test(cvv)) {
-        setErrors((prevErrors) => ({ ...prevErrors, cvv: 'Invalid CVV' }));
+            setErrors((prevErrors) => ({ ...prevErrors, cvv: 'Invalid CVV' }));
         } else {
-        setErrors((prevErrors) => ({ ...prevErrors, cvv: '' }));
+            setErrors((prevErrors) => ({ ...prevErrors, cvv: '' }));
         }
     };
 
@@ -95,12 +95,25 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
         validateExpiryDate();
         validateCvv();
         if (!errors.cardNumber && !errors.expiryDate && !errors.cvv) {
-        handleDonate();
+            handleDonate();
         }
     };
 
 
     const handleDonate = () => {
+        if (cauza.id && user.id){
+            const result = donateToCauseAPI(cauza.id, user.id, sumaDonata, currency);
+            console.log(result)
+
+            if (sumaStransa){
+
+                const updatedSumaStransa = sumaStransa + sumaDonata;
+                const updatedPercentage = (updatedSumaStransa / cauza.sumaMinima) * 100;
+                setSumaStransa(updatedSumaStransa);
+                setPercentage(updatedPercentage);
+            }
+            closeModal();
+        }
       };
 
 
@@ -138,10 +151,10 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                                     </Typography>
                                     <br></br> 
                                     {/* Donation amount and currency fields */}
-                                    <TextField label="Amount" variant="outlined" margin="normal" type="number" fullWidth />
+                                    <TextField label="Amount" variant="outlined" value = {sumaDonata} onChange={(e) => setSumaDonata(parseInt(e.target.value))} margin="normal" type="number" fullWidth />
                                     <FormControl variant="outlined" margin="normal" fullWidth>
                                         <InputLabel>Currency</InputLabel>
-                                        <Select label="Currency">
+                                        <Select label="Currency" value={currency} onChange={(e) => setCurrency(e.target.value)}>
                                             <MenuItem value="GBP">RON</MenuItem>
                                             <MenuItem value="EUR">EUR</MenuItem>
                                             <MenuItem value="USD">USD</MenuItem>
@@ -213,10 +226,11 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                         Minimum Amount: {cauza.sumaMinima} {cauza.moneda}
                     </Typography>
                     <Typography variant="body2" component="p">
-                        Amount Raised: {cauza.sumaStransa} {cauza.moneda}
+                        Amount Raised: {sumaStransa} {cauza.moneda}
                     </Typography>
 
                     {/* Linear Progress with Sad and Happy Icons */}
+                   
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px' }}>
                         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
                             <LinearProgress variant="determinate" value={percentage} sx={{ width: '90%' }} />
@@ -236,3 +250,4 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
         </Card>
     );
 };
+

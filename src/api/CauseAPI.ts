@@ -75,3 +75,12 @@ export const getCauseByIdAPI = async (causeId: number): Promise<CauseUpdate> => 
     }
 };
 
+export const donateToCauseAPI = async (causeId: number, userId: number, sum: number, currency: String) => {
+    try {
+      const response = await axios.put(`${API_PATH}/donate/${causeId}/${userId}/${sum}/${currency}`, null, config);
+      return response.data;
+    } catch (error) {
+      console.error('Error donating to cause:', error);
+      throw error;
+    }
+  };
