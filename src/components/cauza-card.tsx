@@ -5,11 +5,16 @@ import { CausesContext } from "../shared/CauseProvider";
 import {User} from "../shared/Types";
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import CancelIcon from '@mui/icons-material/Cancel';
-import PaymentIcon from '@mui/icons-material/Payment';
 import SadFaceIcon from '@mui/icons-material/MoodBad';
 import HappyFaceIcon from '@mui/icons-material/Mood';
 import { AuthContext } from "../auth/AuthProvider";
 import { donateToCauseAPI } from "../api/CauseAPI";
+import InputAdornment from '@mui/material/InputAdornment';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import EventIcon from '@mui/icons-material/Event';
+import LockIcon from '@mui/icons-material/Lock';
+import PersonIcon from '@mui/icons-material/Person';
+import PaymentsIcon from '@mui/icons-material/Payments';
 
 
 
@@ -151,8 +156,8 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                                     </Typography>
                                     <br></br> 
                                     {/* Donation amount and currency fields */}
-                                    <TextField label="Amount" variant="outlined" value = {sumaDonata} onChange={(e) => setSumaDonata(parseInt(e.target.value))} margin="normal" type="number" fullWidth />
-                                    <FormControl variant="outlined" margin="normal" fullWidth>
+                                    <TextField margin="dense"  label="Amount" variant="outlined" value = {sumaDonata} onChange={(e) => setSumaDonata(parseInt(e.target.value))} type="number" fullWidth />
+                                    <FormControl margin="dense" variant="outlined" fullWidth>
                                         <InputLabel>Currency</InputLabel>
                                         <Select label="Currency" value={currency} onChange={(e) => setCurrency(e.target.value)}>
                                             <MenuItem value="GBP">RON</MenuItem>
@@ -163,42 +168,76 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                                     
                                     {/* Card details */}
                                     <TextField
+                                        label="Card Holder Name"
+                                        variant="outlined"
+                                        margin="dense" 
+                                        fullWidth
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                            <PersonIcon />
+                                            </InputAdornment>
+                                        ),
+                                        }}
+                                    />
+                                    <TextField
                                         label="Card Number"
                                         variant="outlined"
-                                        margin="normal"
+                                        margin="dense" 
                                         fullWidth
                                         value={cardNumber}
                                         onChange={(e) => setCardNumber(e.target.value)}
                                         onBlur={validateCardNumber}
                                         error={Boolean(errors.cardNumber)}
                                         helperText={errors.cardNumber}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                            <CreditCardIcon />
+                                            </InputAdornment>
+                                        ),
+                                        }}
                                     />
                                     <TextField
                                         label="Expiration Date"
                                         variant="outlined"
-                                        margin="normal"
+                                        margin="dense" 
                                         fullWidth
                                         value={expiryDate}
                                         onChange={(e) => setExpiryDate(e.target.value)}
                                         onBlur={validateExpiryDate}
                                         error={Boolean(errors.expiryDate)}
                                         helperText={errors.expiryDate}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                            <EventIcon />
+                                            </InputAdornment>
+                                        ),
+                                        }}
                                     />
                                     <TextField
                                         label="CVV"
                                         variant="outlined"
-                                        margin="normal"
+                                        margin="dense"
                                         fullWidth
                                         value={cvv}
                                         onChange={(e) => setCvv(e.target.value)}
                                         onBlur={validateCvv}
                                         error={Boolean(errors.cvv)}
                                         helperText={errors.cvv}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                            <LockIcon />
+                                            </InputAdornment>
+                                        ),
+                                        }}
                                     />
 
                                     {/* Icons for secure payment */}
                                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10px' }}>
-                                        <PaymentIcon sx={{ width: '20px', height: '20px', marginRight: '5px' }} />
+                                        <PaymentsIcon sx={{ width: '20px', height: '20px', marginRight: '5px' }} />
                                         <Typography variant="body2" sx={{ color: '#555555' }}>Secure Payment</Typography>
                                     </div>
                                 
