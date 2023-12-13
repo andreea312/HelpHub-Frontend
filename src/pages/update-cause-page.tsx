@@ -11,10 +11,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import background from "./fundal-edit-add.png";
-
+import { CausesContext } from "../shared/CauseProvider";
 
 
 export const UpdateCausePage = () => {
+    const { getPicture } = useContext(CausesContext);
     const { logout } = useContext(AuthContext);
     const {causeId} = useParams();
     const [cause, setCause] = useState<CauseUpdate | null>(null);
@@ -30,7 +31,7 @@ export const UpdateCausePage = () => {
     const [errorMsg, setErrorMsg] = useState('');
     const [updateClicked, setUpdateClicked] = useState(false);
     const navigate = useNavigate();
-
+    const [imageUrl, setImageUrl] = useState('');
 
     useEffect(() => {
         const fetchCause = async () => {
@@ -58,9 +59,47 @@ export const UpdateCausePage = () => {
         fetchCause();
     }, [causeId]);
 
+    const getUrl = async () => {
+        if(cause?.poze && getPicture){
+            const url = cause?.poze[0] as any;
+            if(url && url.url){
+                console.log(url, 'cauza', cause.id);
+                const rawUrl = await getPicture(url.url as string);
+                return rawUrl;
+            }
+            return null;
+        }
+    }
+
+    useEffect(()=>{
+        if(cause?.poze){
+
+            if(cause.poze.length > 0){
+        const fetchData = async () => {
+            const fileArray = [];
+            const rawImage = await getUrl();
+            const dataUrl = cause.poze!.at(0) as any;
+            console.log("rawImage:", rawImage);
+            const parts = dataUrl.url.split('/');
+            console.log("fileName: ", parts[parts.length - 1].slice(2));
+            const goodUrl = parts[parts.length - 1].slice(2);
+            const image = new File([rawImage], goodUrl, { type: rawImage.type });
+            console.log("Image: ", image);
+            fileArray.push(image);
+            if (rawImage) {
+                setImageUrl(URL.createObjectURL(rawImage));
+                setImages(fileArray);
+            }
+        };
+        fetchData();
+    }
+    }
+    }, [cause?.poze]);
+
     const handleUpdateCause = async () => {
         try {
             // Fetch sumaStransa from the current cause or from another source if needed
+            console.log("!!!!!saving images: ", images);
 
             await updateCauseAPI(Number(causeId), {
                 id: id,
@@ -74,7 +113,7 @@ export const UpdateCausePage = () => {
                 poze: images
             });
             console.log(images.length)
-            await savePicturesForCause(Number(causeId), images)
+            await savePicturesForCause(Number(causeId), images);
             
             setUpdateClicked(true);
             
@@ -88,6 +127,7 @@ export const UpdateCausePage = () => {
         if (event.target.files) {
             const selectedFiles = Array.from(event.target.files) as File[];
             console.log(selectedFiles);
+            setImageUrl(URL.createObjectURL(selectedFiles[0]))
             setImages(selectedFiles);
         }
     }
@@ -188,7 +228,7 @@ export const UpdateCausePage = () => {
                 />
             </Button>
             {images.length > 0 && 
-                <img src={URL.createObjectURL(new Blob(images))} width="100" height="100" alt="preview image" />
+                <img src={imageUrl} width="100" height="100" alt="preview image" />
             }
             
             <br></br>

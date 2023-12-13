@@ -61,9 +61,10 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
 
     useEffect(()=>{
         const fetchData = async () => {
-            const rawUrl = await getUrl();
-            if (rawUrl) {
-                const dataUrl = URL.createObjectURL(rawUrl);
+            const rawImage = await getUrl();
+            console.log("rawUrl:", rawImage);
+            if (rawImage) {
+                const dataUrl = URL.createObjectURL(rawImage);
                 setImageUrl(dataUrl);
             }
         };

@@ -15,7 +15,7 @@ export const savePicturesForCause = async(cauzaID: number, images: File[]) => {
         console.log(picture);
         pictures.append(`pictures`, picture);
     });
-    console.log('saving pictures...');
+    console.log('saving pictures...', pictures);
     await axios.post(`${API_PATH}/saveImages/${cauzaID}`, pictures, { headers: {'Content-Type': 'multipart/form-data'} });
 }
 

@@ -116,6 +116,7 @@ export const CauseProvider: React.FC<CauseProviderProps> = ({ children }) => {
     async function getPictureCallBack(url: String){
         console.log("URL: ", url);
         const responseData = await getPicturesForCause(url);
+        console.log("GetPuictureCallback:", responseData);
         return responseData;
     }
 
