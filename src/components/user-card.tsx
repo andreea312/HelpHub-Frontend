@@ -4,6 +4,8 @@ import profile from "./profile.png";
 import EditIcon from "@mui/icons-material/Edit";
 
 export const UserCard = ({ user }: { user: User }) => {
+  console.log("!!!!User card:", user);
+
   return (
     <Card
       sx={{

@@ -134,6 +134,7 @@ const wrapperStyle1: CSSProperties = {
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
   display: 'flex',
+  height: '100%'
 };
 
 const wrapperStyle2: CSSProperties = {
@@ -153,7 +154,7 @@ const wrapperStyle2: CSSProperties = {
 
 const wrapperStyleLeft: CSSProperties = {
   backgroundColor: 'transparent',
-  height: '100vh',
+  height: '100%',
   margin: '0px',
   width: '38.5%',
 };

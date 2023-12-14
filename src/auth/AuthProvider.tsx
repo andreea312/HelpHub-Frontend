@@ -19,7 +19,12 @@ export interface AuthState {
 
 const InitialUser: User = {
     email: "",
-    parola: ""
+    parola: "",
+    fullName: "",
+    username: "",
+    gender: 0,
+    coins: 0,
+    level: 0
 }
 
 const initialState: AuthState = {
@@ -63,7 +68,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
              user: {
               id: user.id,
               email: user.email,
-              parola: user.parola
+              parola: user.parola,
+              fullName: user.fullName,
+              username: user.username,
+              gender: user.gender,
+              coins: user.coins,
+              level: user.level
              }
         })
       }

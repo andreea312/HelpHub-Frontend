@@ -119,9 +119,9 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
     };
 
 
-    const handleDonate = () => {
+    const handleDonate = async () => {
         if (cauza.id && user.id){
-            const result = donateToCauseAPI(cauza.id, user.id, sumaDonata, currency);
+            const result = await donateToCauseAPI(cauza.id, user.id, sumaDonata, currency);
             console.log(result)
 
             if (sumaStransa){
@@ -325,4 +325,3 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
         </Card>
     );
 };
-

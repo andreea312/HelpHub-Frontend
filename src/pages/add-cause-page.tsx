@@ -171,7 +171,7 @@ export const AddCausePage = () => {
                 <img src={URL.createObjectURL(images[0])} width="100" height="100" alt="preview image" />
             }
             <Button 
-                sx={{marginTop: "5vh"}}
+                sx={{marginTop: "5vh", marginBottom: "5vh"}}
                 variant="outlined" 
                 color="secondary" 
                 type="submit" 

@@ -1,4 +1,4 @@
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import {HomePage} from "./pages/home-page";
 import {RegisterPage} from "./pages/register-page";
 import {CausesPage} from "./pages/causes-page";
@@ -14,12 +14,12 @@ export const AllRoutes=()=>{
         <CauseProvider>
             <AuthProvider>
             <Routes>
-                <Route path={'/'} element={<HomePage />} />
-                <Route path={'/causes'} element={<CausesPage />} />
                 <Route path={'/mycauses'} element={<MyCausesPage />} />
+                <Route path={'/causes'} element={<CausesPage />} />
                 <Route path={'/add'} element={<AddCausePage />} />
                 <Route path={'/update/:causeId'} element={<UpdateCausePage />} />
-            </Routes>
+                <Route path={'/'} element={<HomePage />} />
+             </Routes> 
             </AuthProvider>
             <UserProvider>
                 <Routes>

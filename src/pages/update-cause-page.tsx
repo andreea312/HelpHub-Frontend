@@ -49,7 +49,7 @@ export const UpdateCausePage = () => {
                     // Convert array of strings to array of File objects
                     setImages(response.poze || []);
                     setSustinator(response.nrSustinatori || 0);
-                    // Fetch sumaStransa here if needed
+                    setSumaStransa(response.sumaStransa || 0);
                 }
             } catch (error) {
                 console.log("Error fetching cause data");
@@ -174,7 +174,7 @@ export const UpdateCausePage = () => {
     }, [images]);
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', height: "100%"}}>
         <AppBar position="static" sx={commonAppBarStyles}>
                 <Toolbar sx={{ justifyContent: 'flex-end', background: '#9999ff'}}>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontFamily: 'Pacifico, cursive', cursor: 'pointer'}} onClick={handleHelpHubClick}>
@@ -261,5 +261,6 @@ const textWrapperStyle: CSSProperties = {
     justifyContent: 'center',
     display: 'flex',
     flexDirection: 'column',
-    height: '90vh'
+    height: '100%',
+    paddingTop: '0vh',
 }

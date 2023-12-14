@@ -17,8 +17,10 @@ export const MyCausesPage = () => {
     const [cauze, setCauze] = useState<Cause[]>([]);
     const navigate = useNavigate();
     
+    console.log("found user: ", user);
     useEffect(()=> {
         if(!user.id){
+            console.log("id not found!!!")
             navigate('/');   
         }
     }, [user.id]);
