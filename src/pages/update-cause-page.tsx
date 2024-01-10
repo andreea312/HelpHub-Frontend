@@ -225,7 +225,6 @@ export const UpdateCausePage = () => {
                 required
                 value={minimumSum !== '' ? minimumSum.toString() : ''}
             />
-            <TextField  sx={{marginBottom: "15px", width:"50vw"}} label="Currency" onChange={(e) => setCurrency(e.target.value)} required value={currency}/>
             
             <Button variant="contained" component="label" sx={{marginBottom: "5vh", background: '#9999ff','&:hover': {
                     backgroundColor: '#ccccff',

@@ -177,7 +177,7 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                                     <FormControl margin="dense" variant="outlined" fullWidth>
                                         <InputLabel>Currency</InputLabel>
                                         <Select label="Currency" value={currency} onChange={(e) => setCurrency(e.target.value)}>
-                                            <MenuItem value="GBP">RON</MenuItem>
+                                            <MenuItem value="RON">RON</MenuItem>
                                             <MenuItem value="EUR">EUR</MenuItem>
                                             <MenuItem value="USD">USD</MenuItem>
                                         </Select>

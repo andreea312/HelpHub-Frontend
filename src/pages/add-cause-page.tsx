@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { TextField, Button, Box, Typography, Dialog, DialogContent, AppBar, Toolbar, Tooltip, IconButton } from "@mui/material";
+import { TextField, Button, Box, Typography, Dialog, DialogContent, AppBar, Toolbar, Tooltip, IconButton, Select, MenuItem } from "@mui/material";
 import { InsertPhoto } from '@mui/icons-material';
 import { Cause } from "../shared/Types";
 import { addCauseAPI } from "../api/CauseAPI";
@@ -160,12 +160,11 @@ export const AddCausePage = () => {
                 />
                 <label className="formLabel"  style={{color: '#990073', fontWeight: 'bold', textTransform: 'none', fontFamily: 'Pacifico, cursive'}}>
                     Currency: </label>
-                <TextField 
-                    label="Currency"
-                    onChange={e => setCurrency(e.target.value)}
-                    required
-                    value={currency}
-                />
+                <Select value={currency} onChange={(e) => setCurrency(e.target.value)}>
+                                            <MenuItem value="RON">RON</MenuItem>
+                                            <MenuItem value="EUR">EUR</MenuItem>
+                                            <MenuItem value="USD">USD</MenuItem>
+                </Select>
             </form>
             <Button variant="contained" component="label" sx={{marginBottom: "5vh", background: '#9999ff','&:hover': {
                     backgroundColor: '#ccccff',
