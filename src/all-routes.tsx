@@ -8,6 +8,7 @@ import { CauseProvider } from './shared/CauseProvider';
 import {UpdateCausePage} from "./pages/update-cause-page";
 import { AuthProvider } from './auth/AuthProvider';
 import { UserProvider } from './auth/RegisterProvider';
+import { ClasamentPage } from './pages/clasament-page';
 
 export const AllRoutes=()=>{
     return(
@@ -19,6 +20,7 @@ export const AllRoutes=()=>{
                 <Route path={'/causes'} element={<CausesPage />} />
                 <Route path={'/add'} element={<AddCausePage />} />
                 <Route path={'/update/:causeId'} element={<UpdateCausePage />} />
+                <Route path={'/clasament'} element={<ClasamentPage />} />
              </Routes> 
             </AuthProvider>
             <UserProvider>

@@ -1,50 +1,45 @@
-import {
-    AppBar,
-    Box,
-    IconButton,
-    Toolbar, Tooltip, CircularProgress, Typography
-} from '@mui/material';
+import { useEffect, useState, useContext } from "react";
+import {AppBar, Box, Toolbar, Typography, Tooltip, IconButton} from "@mui/material";
+import {Cause, User} from "../shared/Types";
+import {getUserCauseAPI} from "../api/CauseAPI";
+import {EditCauzaCard} from "../components/edit-cauza-card";
+import { AuthContext } from "../auth/AuthProvider";
+import { useNavigate } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from 'react-router-dom';
-import {CauzaCard} from '../components/cauza-card';
-import {Cause} from "../shared/Types";
-import {useContext, useEffect, useState} from "react";
-import {getAllCauseAPI} from "../api/CauseAPI";
-import { CausesContext } from '../shared/CauseProvider';
-import { AuthContext } from '../auth/AuthProvider';
-import 'google-fonts'
 import background from "./fundal-cauze.png";
+import { UserCard } from "../components/user-card";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import { getClasamentAPI } from "../api/UserAPI";
+import { UserClasamentCard } from "../components/user-clasament-card";
 
 
-
-export const CausesPage = () => {
-    const { user, logout } = useContext(AuthContext);
-    const { causes, getCauses, fetching } = useContext(CausesContext);
+export const ClasamentPage = () => {
+    const {user, logout } = useContext(AuthContext);
+    const [usersC, setUsersC] = useState<User[]>([]);
     const navigate = useNavigate();
 
+    console.log("found user: ", user);
     useEffect(()=> {
         if(!user.id){
+            console.log("id not found!!!")
             navigate('/');   
         }
     }, [user.id]);
-
-    const fetchCauses = async () => {
+    
+    const fetchClasament = async () => {
         try {
-            await getCauses?.();
+            const response = await getClasamentAPI();
+            setUsersC(response);
         } catch (error) {
-            console.log("Error fetching causes", error);
+            console.log("Error fetching clasament");
         }
     };
-
     useEffect(() => {
-        console.log('fetching...');
-        if(user.id)
-            fetchCauses();
-    }, []);
-
+        fetchClasament();
+    });
+    
     const handleAddClick = () => {
         navigate('/add')
     };
@@ -52,31 +47,22 @@ export const CausesPage = () => {
         navigate('/mycauses')
     };
 
-    const handleLogout = () => {
-        logout?.();
-    }
-
     const handleHelpHubClick = () => {
         navigate('/causes')
     };
 
-    if(fetching){
-        return (
-            <Box>
-                <CircularProgress />
-                <p>Loading...</p>
-            </Box>
-        )
+    const handleClasamentClick = () => {
+        navigate('/clasament')
+    };
+
+    const handleLogout = () => {
+        logout?.();
     }
 
     const commonAppBarStyles = {
         background: '#9999ff',
         height: '3%',
     };
-
-    const handleClasamentClick = () => {
-        navigate('/clasament')
-    }; 
 
     return (
         <Box style={{backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
@@ -107,11 +93,14 @@ export const CausesPage = () => {
                     </Tooltip>
                 </Toolbar>
             </AppBar>
-          
-            {causes?.map((cause, index) => (
-                <CauzaCard key={index} cauza={cause}/>
+            <Box sx={{ textAlign: 'center', marginTop: '20px' }}>
+                <Typography variant="h3" component="div" sx={{color: '#573B8C', marginBottom: '30px', marginTop: '30px', textTransform: 'uppercase' }}>
+                    Top Donors
+                </Typography>
+            </Box>
+            {usersC.map((userC, index) => (
+                <UserClasamentCard key={user.id} user={userC} position={index + 1}/>
             ))}
-           
         </Box>
     );
 }

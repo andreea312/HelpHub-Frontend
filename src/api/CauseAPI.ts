@@ -26,7 +26,7 @@ export const getPicturesForCause = async(url: String) => {
 
 export const getAllCauseAPI = async (): Promise<Cause[]> => {
     try {
-        const response = await axios.get(`${API_PATH}`, config);
+        const response = await axios.get(`${API_PATH}/sorted`, config);
         return response.data as Cause[]; // Cast to Cause[]
     } catch (error) {
         console.error("Error fetching all causes:", error);

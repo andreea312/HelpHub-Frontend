@@ -19,3 +19,13 @@ export const getUserDetails = async (user: User) => {
     const response = await axios.get(`${API_PATH}/email/${user.email}`, config);
     return response.data;
 }
+
+export const getClasamentAPI = async () => {
+    try {
+        const response = await axios.get(`${API_PATH}/top`, config);
+        return response.data as User[];
+    } catch (error) {
+        console.error("Error fetching clasament:", error);
+        throw error;
+    }
+}

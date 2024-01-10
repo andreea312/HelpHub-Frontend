@@ -9,6 +9,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import background from "./fundal-cauze.png";
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { UserCard } from "../components/user-card";
 
 
@@ -66,6 +67,10 @@ export const MyCausesPage = () => {
         logout?.();
     }
 
+    const handleClasamentClick = () => {
+        navigate('/clasament')
+    }; 
+
     const commonAppBarStyles = {
         background: '#9999ff',
         height: '3%',
@@ -86,6 +91,11 @@ export const MyCausesPage = () => {
                     <Tooltip title="My charity causes">
                         <IconButton color="inherit" onClick={handleAccountClick}>
                             <AccountCircleIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Clasament">
+                        <IconButton color="inherit" onClick={handleClasamentClick}>
+                            <EmojiEventsIcon />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Logout">

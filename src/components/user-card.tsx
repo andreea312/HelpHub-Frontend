@@ -102,7 +102,7 @@ export const UserCard = ({ user }: { user: User }) => {
             component="p"
             sx={{ color: "#330066", fontWeight: "bold" }}
           >
-            NrDonations: {userDetails.nrDonations}
+            Donations: {userDetails.nrDonations}
           </Typography>
         </div>
         <div
@@ -112,6 +112,7 @@ export const UserCard = ({ user }: { user: User }) => {
             right: "10px",
           }}
         >
+          {/* EDIT USER BUTTON
           <Button
             sx={{
               margin: 0,
@@ -125,6 +126,7 @@ export const UserCard = ({ user }: { user: User }) => {
           >
             <EditIcon sx={{ fontSize: 24 }} />
           </Button>
+          */}
         </div>
       </CardContent>
     </Card>

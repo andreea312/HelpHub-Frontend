@@ -31,8 +31,8 @@ export const RegisterPage = () => {
           parola: parola,
           fullName: fullName,
           gender: parseInt(gender),
-          points: 100,
-          nrDonations: 1,
+          points: 0,
+          nrDonations: 0,
         };
   
         console.log(user);
