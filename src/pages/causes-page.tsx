@@ -40,7 +40,8 @@ export const CausesPage = () => {
 
     useEffect(() => {
         console.log('fetching...');
-        fetchCauses();
+        if(user.id)
+            fetchCauses();
     }, []);
 
     const handleAddClick = () => {

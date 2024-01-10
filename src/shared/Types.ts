@@ -28,8 +28,8 @@ export interface User {
     parola?: string;
     fullName?: string;
     gender?: number;
-    coins?: number;
-    level?: number;
+    points?: number;
+    nrDonations?: number;
 }
 
 export interface RegisteredUser {
@@ -39,6 +39,26 @@ export interface RegisteredUser {
     parola?: string;
     fullName?: string;
     gender?: number;
-    coins?: number;
-    level?: number;
+    points?: number;
+    nrDonations?: number;
+}
+
+export interface UserDetails {
+    username?: string;
+    email?: string;
+    parola?: string;
+    fullName?: string;
+    gender?: number;
+    points?: number;
+    nrDonations?: number;
+}
+
+export const InitialUserDetails: UserDetails = {
+    username: "",
+    email: "",
+    parola: "",
+    fullName: "",
+    gender: 1,
+    points: 0,
+    nrDonations: 0
 }

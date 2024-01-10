@@ -14,3 +14,8 @@ export const registerAPI = async (user: RegisteredUser) => {
     const response = await axios.post(`${API_PATH}/register`, user, config);
     return response.data;
 }
+
+export const getUserDetails = async (user: User) => {
+    const response = await axios.get(`${API_PATH}/email/${user.email}`, config);
+    return response.data;
+}

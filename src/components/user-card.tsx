@@ -2,9 +2,27 @@ import { Button, Card, CardContent, Typography } from "@mui/material";
 import { User } from "../shared/Types";
 import profile from "./profile.png";
 import EditIcon from "@mui/icons-material/Edit";
+import { useEffect, useState } from "react";
+import { getUserDetails } from "../api/UserAPI";
+import { UserDetails, InitialUserDetails } from "../shared/Types";
 
 export const UserCard = ({ user }: { user: User }) => {
   console.log("!!!!User card:", user);
+  const [userDetails, setUserDetals] = useState(InitialUserDetails);
+
+  useEffect(()=> {
+    console.log("User card rerender");
+    const fetchUserDetails = async () => {
+       const userDetails: User = await getUserDetails(user);
+       console.log("User details: ", userDetails);
+       setUserDetals(userDetails);
+       console.log("User details: ", userDetails);
+    };
+
+    if(user.id)
+      fetchUserDetails();
+  }, []);
+
 
   return (
     <Card
@@ -49,42 +67,42 @@ export const UserCard = ({ user }: { user: User }) => {
             component="p"
             sx={{ color: "#330066", fontWeight: "bold" }}
           >
-            Name: {user.fullName}
+            Name: {userDetails.fullName}
           </Typography>
           <Typography
             variant="body1"
             component="p"
             sx={{ color: "#330066", fontWeight: "bold" }}
           >
-            Username: {user.username}
+            Username: {userDetails.username}
           </Typography>
           <Typography
             variant="body1"
             component="p"
             sx={{ color: "#330066", fontWeight: "bold" }}
           >
-            Email: {user.email}
+            Email: {userDetails.email}
           </Typography>
           <Typography
             variant="body1"
             component="p"
             sx={{ color: "#330066", fontWeight: "bold" }}
           >
-            Gender: {user.gender}
+            Gender: {userDetails.gender}
           </Typography>
           <Typography
             variant="body1"
             component="p"
             sx={{ color: "#330066", fontWeight: "bold" }}
           >
-            Points: {user.coins}
+            Points: {userDetails.points}
           </Typography>
           <Typography
             variant="body1"
             component="p"
             sx={{ color: "#330066", fontWeight: "bold" }}
           >
-            Level: {user.level}
+            NrDonations: {userDetails.nrDonations}
           </Typography>
         </div>
         <div

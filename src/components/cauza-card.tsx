@@ -32,6 +32,8 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
     const [currency, setCurrency] = useState(cauza.moneda);
     const [sumaDonata, setSumaDonata] = useState(0);
 
+    console.log("Strans: "+sumaStransa);
+
     const [errors, setErrors] = useState({
         cardNumber: '',
         expiryYear: '',
@@ -124,8 +126,8 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
             const result = await donateToCauseAPI(cauza.id, user.id, sumaDonata, currency);
             console.log(result)
 
-            if (sumaStransa){
-
+            console.log(" in handle donate Strans: "+sumaStransa);
+            if (sumaStransa != null){
                 const updatedSumaStransa = sumaStransa + sumaDonata;
                 const updatedPercentage = (updatedSumaStransa / cauza.sumaMinima) * 100;
                 setSumaStransa(updatedSumaStransa);

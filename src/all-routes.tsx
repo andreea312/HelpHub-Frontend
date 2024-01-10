@@ -14,11 +14,11 @@ export const AllRoutes=()=>{
         <CauseProvider>
             <AuthProvider>
             <Routes>
+                <Route path={'/'} element={<HomePage />} />
                 <Route path={'/mycauses'} element={<MyCausesPage />} />
                 <Route path={'/causes'} element={<CausesPage />} />
                 <Route path={'/add'} element={<AddCausePage />} />
                 <Route path={'/update/:causeId'} element={<UpdateCausePage />} />
-                <Route path={'/'} element={<HomePage />} />
              </Routes> 
             </AuthProvider>
             <UserProvider>

@@ -23,8 +23,8 @@ const InitialUser: User = {
     fullName: "",
     username: "",
     gender: 0,
-    coins: 0,
-    level: 0
+    points: 0,
+    nrDonations: 0
 }
 
 const initialState: AuthState = {
@@ -72,8 +72,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               fullName: user.fullName,
               username: user.username,
               gender: user.gender,
-              coins: user.coins,
-              level: user.level
+              points: user.points,
+              nrDonations: user.nrDonations
              }
         })
       }
