@@ -29,3 +29,13 @@ export const getClasamentAPI = async () => {
         throw error;
     }
 }
+
+export const updateUserAPI = async (userId:Number, updatedUser: User) => {
+    try {
+        const response = await axios.put(`${API_PATH}/${userId}`, updatedUser, config);
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating user with ID ${userId}:`, error);
+        throw error;
+    }
+};
