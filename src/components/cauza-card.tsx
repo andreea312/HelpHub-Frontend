@@ -16,6 +16,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import LocationIcon from '@mui/icons-material/LocationOn';
+import { getUserOfCauzaAPI } from "../api/UserAPI";
 
 
 export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
@@ -31,8 +32,11 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
     const [sumaStransa, setSumaStransa] = useState(cauza.sumaStransa);
     const [currency, setCurrency] = useState(cauza.moneda);
     const [sumaDonata, setSumaDonata] = useState(0);
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
 
-    console.log("Strans: "+sumaStransa);
+
+    console.log("Strans: " + sumaStransa);
 
     const [errors, setErrors] = useState({
         cardNumber: '',
@@ -68,6 +72,11 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
             if (rawImage) {
                 const dataUrl = URL.createObjectURL(rawImage);
                 setImageUrl(dataUrl);
+            }
+            const userOfCauza = await getUserOfCauzaAPI(cauza.id || 0);
+            if (userOfCauza){
+                setUsername(userOfCauza.username || '');
+                setEmail(userOfCauza.email || '');
             }
         };
         fetchData();
@@ -141,7 +150,7 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
     return (
         <Card sx={{ borderRadius: '10px', border: '1px solid #9999ff', marginTop: '20px', marginRight: '20px', marginLeft: '20px', opacity: '0.8'}}>
             <CardContent sx={{ display: 'flex'}}>
-                <div style={{ flex: '20%', margin: '10px'}}>
+                <div style={{ flex: '30%', margin: '10px'}}>
                     {imageUrl && 
                         <img
                             src={imageUrl}
@@ -151,7 +160,7 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                     }
                 </div>
                 <div style={{ flex: '80%', margin: '10px'}}>
-                    <div style={{display: 'flex', flex: '80%', marginBottom: '10px'}}>
+                    <div style={{display: 'flex', flex: '80%', marginBottom: '0px'}}>
                         <Typography variant="h5" component="h2" sx={{color: '#990073', fontWeight: 'bold', textTransform: 'none', fontFamily: 'Pacifico, cursive'}}>
                             {cauza.titlu}
                         </Typography>
@@ -287,11 +296,16 @@ export const CauzaCard = ({ cauza }: { cauza: Cause } ) => {
                             </Box>
                         </Modal>
 
-
-
                         
                     </div>
-
+                    <Typography variant="body2" component="p" style={{ display: 'inline-block'}}>
+                        posted by: 
+                        <a href={`mailto: ${email}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <span> { username}</span>
+                        </a>
+                    </Typography>
+                    <br></br>                    
+                    <br></br>
                     <Typography variant="body2" component="p" sx={{color: '#330066', fontWeight: 'bold'}}>
                         {cauza.descriere}
                     </Typography>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { baseUrl, config } from "./index";
-import { User, RegisteredUser } from "../shared/Types";
+import { User, RegisteredUser, Cause } from "../shared/Types";
 
 const API_PATH = `${baseUrl}/user`;
 
@@ -26,6 +26,16 @@ export const getClasamentAPI = async () => {
         return response.data as User[];
     } catch (error) {
         console.error("Error fetching clasament:", error);
+        throw error;
+    }
+}
+
+export const getUserOfCauzaAPI = async (cauzaId: Number) => {
+    try {
+        const response = await axios.get(`${API_PATH}/userofcauza/${cauzaId}`, config);
+        return response.data as User;
+    } catch (error) {
+        console.error("Error fetching user of cause:", error);
         throw error;
     }
 }
