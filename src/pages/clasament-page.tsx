@@ -31,6 +31,8 @@ export const ClasamentPage = () => {
     const fetchClasament = async () => {
         try {
             const response = await getClasamentAPI();
+            console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            console.log(response);
             setUsersC(response);
         } catch (error) {
             console.log("Error fetching clasament");
@@ -38,7 +40,7 @@ export const ClasamentPage = () => {
     };
     useEffect(() => {
         fetchClasament();
-    });
+    }, []);
     
     const handleAddClick = () => {
         navigate('/add')
@@ -99,7 +101,7 @@ export const ClasamentPage = () => {
                 </Typography>
             </Box>
             {usersC.map((userC, index) => (
-                <UserClasamentCard key={user.id} user={userC} position={index + 1}/>
+                <UserClasamentCard key={userC.id} user={userC} position={index + 1}/>
             ))}
         </Box>
     );
