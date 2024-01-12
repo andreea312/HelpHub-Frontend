@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
-import {AppBar, Box, Toolbar, Typography, Tooltip, IconButton} from "@mui/material";
-import {Cause} from "../shared/Types";
-import {getUserCauseAPI} from "../api/CauseAPI";
-import {EditCauzaCard} from "../components/edit-cauza-card";
+import { AppBar, Box, Toolbar, Typography, Tooltip, IconButton } from "@mui/material";
+import { Cause, Achievement } from "../shared/Types";
+import { getUserCauseAPI } from "../api/CauseAPI";
+import { EditCauzaCard } from "../components/edit-cauza-card";
 import { AuthContext } from "../auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -11,20 +11,22 @@ import AddIcon from '@mui/icons-material/Add';
 import background from "./fundal-cauze.png";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { UserCard } from "../components/user-card";
-
+import { getAchievmentsAPI, userGotAchievementAPI } from "../api/AchievmentAPI";
 
 export const MyCausesPage = () => {
     const { user, logout } = useContext(AuthContext);
     const [cauze, setCauze] = useState<Cause[]>([]);
+    const [achievements, setAchievements] = useState<Achievement[]>([]);
+    const [userAchievements, setUserAchievements] = useState<number[]>([]);
+
     const navigate = useNavigate();
-    
-    console.log("found user: ", user);
-    useEffect(()=> {
-        if(!user.id){
-            console.log("id not found!!!")
-            navigate('/');   
+
+    useEffect(() => {
+        if (!user.id) {
+            console.log("id not found!!!");
+            navigate('/');
         }
-    }, [user.id]);
+    }, [user.id, navigate]);
 
     const fetchUserCauses = async () => {
         try {
@@ -34,42 +36,57 @@ export const MyCausesPage = () => {
             console.log("Error fetching user causes");
         }
     };
+
     useEffect(() => {
         fetchUserCauses();
     }, [user.id]);
-    // const causesHardcoded: Cause[] = [
-    //     {
-    //         id: 1,
-    //         descriere: "Strangere de fonduri pentru renovarea scolilor",
-    //         titlu: "Renovare Scoli",
-    //         locatie: "Orasul X",
-    //         sumaMinima: 10000,
-    //         sumaStransa: 5000,
-    //         moneda: "EUR"
-    //     }
-    // ];
-    const handleCauseDelete = (deletedCauseId: Number) => {
+
+    const fetchAchievements = async () => {
+        try {
+            const response = await getAchievmentsAPI();
+            setAchievements(response);
+
+            const userAchievementsResponse = await Promise.all(response.map(async (achievement) => {
+                const userGotAchievementResponse = await userGotAchievementAPI(user.id || 0, achievement.id || 0);
+                return userGotAchievementResponse ? achievement.id : -1;
+            }));
+
+            const filteredUserAchievements = userAchievementsResponse.filter(id => id !== -1);
+            setUserAchievements(filteredUserAchievements as number[]);
+            console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            console.log(filteredUserAchievements);
+        } catch (error) {
+            console.log("Error fetching achievements");
+        }
+    };
+
+    useEffect(() => {
+        fetchAchievements();
+    }, []);
+
+    const handleCauseDelete = (deletedCauseId: number) => {
         setCauze(cauze.filter((cause) => cause.id !== deletedCauseId));
     };
 
     const handleAddClick = () => {
-        navigate('/add')
+        navigate('/add');
     };
+
     const handleAccountClick = () => {
-        navigate('/mycauses')
+        navigate('/mycauses');
     };
 
     const handleHelpHubClick = () => {
-        navigate('/causes')
+        navigate('/causes');
     };
 
     const handleLogout = () => {
         logout?.();
-    }
+    };
 
     const handleClasamentClick = () => {
-        navigate('/clasament')
-    }; 
+        navigate('/clasament');
+    };
 
     const commonAppBarStyles = {
         background: '#9999ff',
@@ -77,12 +94,12 @@ export const MyCausesPage = () => {
     };
 
     return (
-        <Box style={{backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
+        <Box style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
             <AppBar position="static" sx={commonAppBarStyles}>
-                <Toolbar sx={{ justifyContent: 'flex-end', background: '#9999ff'}}>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontFamily: 'Pacifico, cursive', cursor: 'pointer' }} onClick={handleHelpHubClick}>
-                    HelpHub
-                </Typography>
+                <Toolbar sx={{ justifyContent: 'flex-end', background: '#9999ff' }}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontFamily: 'Pacifico, cursive', cursor: 'pointer' }} onClick={handleHelpHubClick}>
+                        HelpHub
+                    </Typography>
                     <Tooltip title="Add charity cause">
                         <IconButton color="inherit" onClick={handleAddClick}>
                             <AddIcon />
@@ -105,13 +122,73 @@ export const MyCausesPage = () => {
                     </Tooltip>
                 </Toolbar>
             </AppBar>
-            
-            <UserCard key={user.id} user={user}/>
+
+            <Box style={{ display: 'flex', alignItems: 'center', padding: '20px' }}>
+                {/* User Card on the Left */}
+                <UserCard key={user.id} user={user} />
+
+                {/* Achievements on the Right */}
+                <div style={{ display: 'flex', marginLeft: '20px' }}>
+                    <div>
+                        <img
+                            src={require(`./1donation.png`)}
+                            style={{
+                                maxWidth: '200px',
+                                height: '200px',
+                                filter: userAchievements.includes(1) ? 'none' : 'blur(10px)',
+                            }}
+                        />
+                    </div>
+
+                    <div>
+                        <img
+                            src={require(`./5donations.png`)}
+                            style={{
+                                maxWidth: '200px',
+                                height: '200px',
+                                filter: userAchievements.includes(2) ? 'none' : 'blur(10px)',
+                            }}
+                        />
+                    </div>
+
+                    <div>
+                        <img
+                            src={require(`./10donations.png`)}
+                            style={{
+                                maxWidth: '200px',
+                                height: '200px',
+                                filter: userAchievements.includes(3) ? 'none' : 'blur(10px)',
+                            }}
+                        />
+                    </div>
+
+                    <div>
+                        <img
+                            src={require(`./100points.png`)}
+                            style={{
+                                maxWidth: '200px',
+                                height: '200px',
+                                filter: userAchievements.includes(4) ? 'none' : 'blur(10px)',
+                            }}
+                        />
+                    </div>
+
+                    <div>
+                        <img
+                            src={require(`./500points.png`)}
+                            style={{
+                                maxWidth: '200px',
+                                height: '200px',
+                                filter: userAchievements.includes(5) ? 'none' : 'blur(10px)',
+                            }}
+                        />
+                    </div>
+                </div>
+            </Box>
 
             {cauze.map((cauza) => (
-                <EditCauzaCard key={cauza.id} cauza={cauza} onDelete={handleCauseDelete}/>
+                <EditCauzaCard key={cauza.id} cauza={cauza} onDelete={handleCauseDelete} />
             ))}
-
         </Box>
     );
-}
+};

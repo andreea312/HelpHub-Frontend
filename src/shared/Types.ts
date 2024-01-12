@@ -53,6 +53,13 @@ export interface UserDetails {
     nrDonations?: number;
 }
 
+export interface Achievement {
+    id?: number;
+    nr_donations_required?: number;
+    points_required?: number;
+    url?: string;
+}
+
 export const InitialUserDetails: UserDetails = {
     username: "",
     email: "",

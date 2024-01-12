@@ -33,6 +33,7 @@ export const getAllCauseAPI = async (): Promise<Cause[]> => {
         throw error;
     }
 };
+
 export const getUserCauseAPI = async (userID: number): Promise<Cause[]> => {
     try {
         const response = await axios.get(`${API_PATH}/users/${userID}`, config);
