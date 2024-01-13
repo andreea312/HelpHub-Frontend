@@ -51,6 +51,7 @@ export interface UserDetails {
     gender?: number;
     points?: number;
     nrDonations?: number;
+    achievements: Achievement[]
 }
 
 export interface Achievement {
@@ -67,5 +68,6 @@ export const InitialUserDetails: UserDetails = {
     fullName: "",
     gender: 1,
     points: 0,
-    nrDonations: 0
+    nrDonations: 0,
+    achievements: []
 }

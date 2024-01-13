@@ -70,7 +70,7 @@ export const UserCard = ({ user }: { user: User }) => {
     <>
       <Card
         sx={{
-          width: "400px",
+          maxWidth: "30%",
           justifyContent: "center",
           alignItems: "center",
           borderRadius: "10px",

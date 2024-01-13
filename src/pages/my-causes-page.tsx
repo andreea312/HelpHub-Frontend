@@ -12,12 +12,15 @@ import background from "./fundal-cauze.png";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { UserCard } from "../components/user-card";
 import { getAchievmentsAPI, userGotAchievementAPI } from "../api/AchievmentAPI";
+import { InitialUserDetails, UserDetails } from "../shared/Types";
+import { getUserDetails } from "../api/UserAPI";
 
 export const MyCausesPage = () => {
     const { user, logout } = useContext(AuthContext);
     const [cauze, setCauze] = useState<Cause[]>([]);
     const [achievements, setAchievements] = useState<Achievement[]>([]);
     const [userAchievements, setUserAchievements] = useState<number[]>([]);
+    const [userDetails, setUserDetails] = useState<UserDetails>(InitialUserDetails);
 
     const navigate = useNavigate();
 
@@ -41,28 +44,25 @@ export const MyCausesPage = () => {
         fetchUserCauses();
     }, [user.id]);
 
-    const fetchAchievements = async () => {
-        try {
-            const response = await getAchievmentsAPI();
-            setAchievements(response);
-
-            const userAchievementsResponse = await Promise.all(response.map(async (achievement) => {
-                const userGotAchievementResponse = await userGotAchievementAPI(user.id || 0, achievement.id || 0);
-                return userGotAchievementResponse ? achievement.id : -1;
-            }));
-
-            const filteredUserAchievements = userAchievementsResponse.filter(id => id !== -1);
-            setUserAchievements(filteredUserAchievements as number[]);
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+          try {
+            const userDetails: UserDetails = await getUserDetails(user);
+            setUserDetails(userDetails);
+            console.log("user details: ", userDetails);
+            const filteredUserAchievements = userDetails.achievements.map(a => a.id!);
+            setUserAchievements(filteredUserAchievements);
             console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             console.log(filteredUserAchievements);
-        } catch (error) {
-            console.log("Error fetching achievements");
+          } catch (error) {
+            console.log("Error fetching user details");
+          }
+        };
+    
+        if (user.id) {
+          fetchUserDetails();
         }
-    };
-
-    useEffect(() => {
-        fetchAchievements();
-    }, []);
+      }, [user]);
 
     const handleCauseDelete = (deletedCauseId: number) => {
         setCauze(cauze.filter((cause) => cause.id !== deletedCauseId));
@@ -123,12 +123,12 @@ export const MyCausesPage = () => {
                 </Toolbar>
             </AppBar>
 
-            <Box style={{ display: 'flex', alignItems: 'center', padding: '20px' }}>
+            <Box style={{ display: 'flex', alignItems: 'center', padding: '20px', maxWidth: '100%' }}>
                 {/* User Card on the Left */}
                 <UserCard key={user.id} user={user} />
 
                 {/* Achievements on the Right */}
-                <div style={{ display: 'flex', marginLeft: '20px' }}>
+                <div style={{ display: 'flex', marginLeft: '20px', maxWidth: '70%' }}>
                     <div>
                         <img
                             src={require(`./1donation.png`)}
