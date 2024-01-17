@@ -14,7 +14,7 @@ export const RegisterPage = () => {
     const [username, setUsername] = useState('');
     const [fullName, setFullName] = useState('');
     const [gender, setGender] = useState('');
-    const [passwordsMatch, setPasswordsMatch] = useState(true); // Track if passwords match
+    const [passwordsMatch, setPasswordsMatch] = useState(true);
     const navigate = useNavigate();
   
     const handleRegister = async () => {

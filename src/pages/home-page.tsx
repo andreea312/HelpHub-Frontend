@@ -8,11 +8,12 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 export const HomePage = () => {
-  const { login, user } = useContext(AuthContext);
+  const { login, user, authenticationError } = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [correctCredentials, setCorrectCredentials] = useState(true);
 
   const navigate = useNavigate();
 
@@ -26,6 +27,12 @@ export const HomePage = () => {
     console.log('login!');
     login?.(email, password);
   };
+
+  useEffect(()=> {
+    console.log("Login failed: "+authenticationError);
+    if(authenticationError)
+      setCorrectCredentials(false);
+  }, [authenticationError]);
 
   const handleRegisterNav = () => {
     navigate('/register');
@@ -70,6 +77,8 @@ export const HomePage = () => {
             label="email"
             onChange={handleEmail}
             sx={{ width: '73%' }}
+            error={!correctCredentials}
+            helperText={correctCredentials ? '' : 'Incorrect credentials'}
           />
           <br />
           <TextField
@@ -78,6 +87,8 @@ export const HomePage = () => {
             onChange={handlePassword}
             sx={{ width: '73%' }}
             type={showPassword ? 'text' : 'password'}
+            error={!correctCredentials}
+            helperText={correctCredentials ? '' : 'Incorrect credentials'}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -121,7 +132,8 @@ export const HomePage = () => {
             Register
           </Button>
         </Container>
-        <Container sx={wrapperStyleRight}>{/* ... */}</Container>
+        <Container sx={wrapperStyleRight}>
+        </Container>
       </div>
     </>
   );

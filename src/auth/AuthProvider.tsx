@@ -144,6 +144,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           pendingAuthentication: false,
           isAuthenticated: true,
           isAuthenticating: false,
+          authenticationError: null,
           user: loggedUser
         });
       } catch (error) {

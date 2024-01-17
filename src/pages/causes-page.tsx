@@ -135,7 +135,7 @@ export const CausesPage = () => {
       </AppBar>
 
       {causes?.filter(filterCausesByLocation).map((cause, index) => (
-        <CauzaCard key={index} cauza={cause} />
+        <CauzaCard key={cause.id} cauza={cause} />
       ))}
     </Box>
   );
