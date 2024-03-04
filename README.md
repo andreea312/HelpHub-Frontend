@@ -2,7 +2,7 @@
 (the code is on branch "master")<br>
 Made using React and Material UI, it communicates with the backend using the AXIOS HTTP library.
 
-<br>
+<br><br>
 ![image](https://github.com/andreea312/HelpHub-Frontend/assets/57728182/4a6c8246-196f-4b3a-8382-bdc13e764469)<br>
 ![image](https://github.com/andreea312/HelpHub-Frontend/assets/57728182/78f626f3-8e2e-4ee3-84d1-1641c4d8d393)<br>
 ![image](https://github.com/andreea312/HelpHub-Frontend/assets/57728182/73055306-b871-420c-96a7-83fedcf2adf1)<br>
