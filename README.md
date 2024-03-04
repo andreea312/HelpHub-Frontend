@@ -1,4 +1,5 @@
 # Frontend of HelpHub web application
+(the code is on branch "master")
 Made using React and Material UI, it communicates with the backend using the AXIOS HTTP library.
 
 <br> <br>
